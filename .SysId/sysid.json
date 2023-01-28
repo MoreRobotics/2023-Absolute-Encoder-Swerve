@@ -3,6 +3,13 @@
     "Analysis Type": "Drivetrain",
     "NetworkTables Settings": {
       "serverTeam": "1714"
-    }
+    },
+    "Program Log": {
+      "window": {
+        "visible": false
+      }
+    },
+    "mode": "Client (NT4)",
+    "serverTeam": "1714"
   }
 }
