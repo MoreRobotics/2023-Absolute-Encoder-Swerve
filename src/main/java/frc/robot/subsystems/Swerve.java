@@ -5,6 +5,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import frc.robot.SwerveModule;
+import frc.lib.util.Utility;
 import frc.robot.Constants;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -32,6 +33,9 @@ public class Swerve extends SubsystemBase {
     public Pigeon2 gyro;
 
     public Swerve() {
+        Utility.createSmartDashboardNumber("Pvalue", 0);
+        // SmartDashboard.putNumber("Pvalue", 0);
+
         gyro = new Pigeon2(Constants.Swerve.pigeonID);
         gyro.configFactoryDefault();
         zeroGyro();
@@ -127,16 +131,16 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("RobotCoordinatesY",swerveOdometry.getPoseMeters().getY());
 
         for(SwerveModule mod : mSwerveMods){
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + "target angle", mod.getAngle().getDegrees());
+            // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
+            // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
+            // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+            // SmartDashboard.putNumber("Mod " + mod.moduleNumber + "target angle", mod.getAngle().getDegrees());
         }
     }
 
-
     // Assuming this method is part of a drivetrain subsystem that provides the necessary methods
     public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+        double PValue = SmartDashboard.getNumber("Pvalue", 0);
 
         return new SequentialCommandGroup(
             new InstantCommand(() -> {
@@ -151,8 +155,8 @@ public class Swerve extends SubsystemBase {
                 traj, 
                 this::getPose, // Pose supplier
                 Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
-                new PIDController(0.54, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                new PIDController(0.54, 0, 0), // Y controller (usually the same values as X controller)
+                new PIDController(PValue, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                new PIDController(PValue, 0, 0), // Y controller (usually the same values as X controller)
                 new PIDController(5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
                 this::setModuleStates, // Module states consumer
                 this // Requires this drive subsystem
