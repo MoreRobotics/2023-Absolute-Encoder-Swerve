@@ -28,6 +28,8 @@ public class Robot extends TimedRobot {
 
   private Command resetAbsolute;
 
+  private static final String limelightIP = "10.17.14.11:5800";
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
