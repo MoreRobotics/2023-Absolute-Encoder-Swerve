@@ -22,6 +22,7 @@ public final class Constants {
     public static final double LIMELIGHT_PITCH_RADIANS = Units.degreesToRadians(90);
 
     public static final double TARGET_HEIGHT_METERS = 0.5;
+    public static final int CANDLE_PORT = 9;
 
     public static final class Swerve {
         //TODO: Fixme
