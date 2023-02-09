@@ -29,7 +29,8 @@
  import edu.wpi.first.math.geometry.Pose2d;
  import edu.wpi.first.math.geometry.Pose3d;
  import edu.wpi.first.math.geometry.Rotation2d;
- import frc.robot.Constants.FieldConstants;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.FieldConstants;
  import frc.robot.Constants.VisionConstants;
  import java.util.ArrayList;
  import java.util.Optional;
@@ -38,9 +39,11 @@
  import org.photonvision.PhotonPoseEstimator;
  import org.photonvision.PhotonPoseEstimator.PoseStrategy;
  
- public class Limelight {
+ public class Limelight extends SubsystemBase{
+        
      public PhotonCamera photonCamera;
      public PhotonPoseEstimator photonPoseEstimator;
+     public Pose2d prevEstimatedRobotPose;
  
      public Limelight() {
          // Set up a test arena of two apriltags at the center of each driver station set
@@ -86,6 +89,13 @@
          photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
          return photonPoseEstimator.update();
      }
+
+     public Optional<EstimatedRobotPose> setFirstEstimatedGlobalPose() {
+        Pose2d zero = new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0));
+        photonPoseEstimator.setReferencePose(zero);
+        return photonPoseEstimator.update();
+    }
+
 
 
      
