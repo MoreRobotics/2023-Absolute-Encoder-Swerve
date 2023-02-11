@@ -195,4 +195,9 @@ public class Swerve extends SubsystemBase {
         // m_fieldSim.getObject("Actual Pos").setPose(m_drivetrainSimulator.getPose());
         // m_fieldSim.setRobotPose(m_poseEstimator.getEstimatedPosition());
     }
+
+    public void rotateToAprilTag(Rotation2d apriltagPose, Rotation2d robotPose) {
+
+        drive(null, 0, false, false);
+    }
 }
