@@ -75,7 +75,8 @@ dependencies {
 
     /* Adds @Autolog annotation processor */
     /* https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/docs/INSTALLATION.md#autolog-annotation */
-    annotationProcessor "org.littletonrobotics.akit.junction:junction-autolog:<version>"
+    def akitJson = new groovy.json.JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
+    annotationProcessor "org.littletonrobotics.akit.junction:junction-autolog:$akitJson.version"
 }
 
 test {
@@ -133,6 +134,6 @@ gversion {
   classPackage = "frc.robot"
   className    = "BuildConstants"
   dateFormat   = "yyyy-MM-dd HH:mm:ss z"
-  timeZone     = "America/New_York" // Use preferred time zone
+  timeZone     = "America/Chicago" // Use preferred time zone
   indent       = "  "
 }
