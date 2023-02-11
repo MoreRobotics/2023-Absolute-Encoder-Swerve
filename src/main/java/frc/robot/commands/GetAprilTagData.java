@@ -11,7 +11,7 @@ import frc.robot.subsystems.*;
 
 public class GetAprilTagData extends CommandBase {
 
-  Limelight limelight = new Limelight();
+  Limelight limelight;
 
   /** Creates a new DriveForward. */
   public GetAprilTagData(Limelight limelight) {

@@ -166,12 +166,13 @@ public final class Constants {
 
     public static class VisionConstants {
         public static final Transform3d robotToCam =
+                // TODO: Change this to where the limelight is on the robot
                 new Transform3d(
                         new Translation3d(0.5, 0.0, 0.5),
                         new Rotation3d(
                                 0, 0,
                                 0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
         // from center.
-        public static final String cameraName = "YOUR CAMERA NAME";
+        public static final String cameraName = "limelight";
     }
 }

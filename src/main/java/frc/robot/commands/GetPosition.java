@@ -11,7 +11,7 @@ import frc.robot.subsystems.Limelight;
 
 public class GetPosition extends CommandBase {
 
-    Limelight limelight = new Limelight();
+    Limelight limelight;
     /** Creates a new DriveForward. */
     public GetPosition(Limelight limelight) {
       // Use addRequirements() here to declare subsystem dependencies.
@@ -22,7 +22,7 @@ public class GetPosition extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        limelight.getEstimatedGlobalPose();
+        // limelight.getEstimatedGlobalPose();
     }
 
     // Called every time the scheduler runs while the command is scheduled.

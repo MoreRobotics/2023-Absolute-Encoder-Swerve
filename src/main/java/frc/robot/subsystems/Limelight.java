@@ -26,14 +26,18 @@
 
  import edu.wpi.first.apriltag.AprilTag;
  import edu.wpi.first.apriltag.AprilTagFieldLayout;
- import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
  import edu.wpi.first.math.geometry.Pose3d;
  import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FieldConstants;
  import frc.robot.Constants.VisionConstants;
- import java.util.ArrayList;
- import java.util.Optional;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
  import org.photonvision.EstimatedRobotPose;
  import org.photonvision.PhotonCamera;
  import org.photonvision.PhotonPoseEstimator;
@@ -47,37 +51,31 @@ import frc.robot.Constants.FieldConstants;
  
      public Limelight() {
          // Set up a test arena of two apriltags at the center of each driver station set
-         final AprilTag tag18 =
-                 new AprilTag(
-                         18,
-                         new Pose3d(
-                                 new Pose2d(
-                                         FieldConstants.length,
-                                         FieldConstants.width / 2.0,
-                                         Rotation2d.fromDegrees(180))));
-         final AprilTag tag01 =
-                 new AprilTag(
-                         01,
-                         new Pose3d(new Pose2d(0.0, FieldConstants.width / 2.0, Rotation2d.fromDegrees(0.0))));
-         ArrayList<AprilTag> atList = new ArrayList<AprilTag>();
-         atList.add(tag18);
-         atList.add(tag01);
+        //  final AprilTag tag18 =
+        //          new AprilTag(
+        //                  18,
+        //                  new Pose3d(
+        //                          new Pose2d(
+        //                                  FieldConstants.length,
+        //                                  FieldConstants.width / 2.0,
+        //                                  Rotation2d.fromDegrees(180))));
+        //  final AprilTag tag01 =
+        //          new AprilTag(
+        //                  01,
+        //                  new Pose3d(new Pose2d(0.0, FieldConstants.width / 2.0, Rotation2d.fromDegrees(0.0))));
+        //  ArrayList<AprilTag> atList = new ArrayList<AprilTag>();
+        //  atList.add(tag18);
+        //  atList.add(tag01);
  
-         // TODO - once 2023 happens, replace this with just loading the 2023 field arrangement
-         AprilTagFieldLayout atfl =
-                 new AprilTagFieldLayout(atList, FieldConstants.length, FieldConstants.width);
+         AprilTagFieldLayout aprilTagFieldLayout = loadFieldLayout();
  
          // Forward Camera
-         photonCamera =
-                 new PhotonCamera(
-                         VisionConstants
-                                 .cameraName); // Change the name of your camera here to whatever it is in the
+         photonCamera = new PhotonCamera(VisionConstants.cameraName); // Change the name of your camera here to whatever it is in the
          // PhotonVision UI.
  
          // Create pose estimator
-         photonPoseEstimator =
-                 new PhotonPoseEstimator(
-                         atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, VisionConstants.robotToCam);
+         // TODO: Change robotToCam to match where the limelight is
+         photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, VisionConstants.robotToCam);
      }
  
      /**
@@ -96,7 +94,16 @@ import frc.robot.Constants.FieldConstants;
         return photonPoseEstimator.update();
     }
 
-
+    private AprilTagFieldLayout loadFieldLayout() {
+        try {
+                return AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+        } catch (IOException e) {
+                System.out.println("Unable to load AprilTagFieldLayout");
+                e.printStackTrace();
+                // return an empty AprilTagFieldLayout
+                return new AprilTagFieldLayout(new ArrayList<AprilTag>(), FieldConstants.length, FieldConstants.width);
+        }
+    }
 
      
  }
