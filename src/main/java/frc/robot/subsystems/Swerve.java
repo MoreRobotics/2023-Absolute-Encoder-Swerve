@@ -1,5 +1,9 @@
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
@@ -27,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class Swerve extends SubsystemBase {
+
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
@@ -158,27 +163,30 @@ public class Swerve extends SubsystemBase {
 
     //NOTE: This was copied from https://github.com/PhotonVision/photonvision/blob/master/photonlib-java-examples/apriltagExample/src/main/java/frc/robot/Drivetrain.java
     //It doesn't work yet.
-    // public void updateOdometry() {
-    //     m_poseEstimator.update(
-    //             m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+    public void updateOdometry() {
+        //TODO: Create SwerveDrivePoseEstimator object
+        //TODO: update this method to properly use SwerveDrivePoseEstimator.update()
+        m_poseEstimator.update(
+                m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
 
-    //     // Also apply vision measurements. We use 0.3 seconds in the past as an example
-    //     // -- on
-    //     // a real robot, this must be calculated based either on latency or timestamps.
-    //     Optional<EstimatedRobotPose> result =
-    //             pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
+        // Also apply vision measurements. We use 0.3 seconds in the past as an example
+        // -- on
+        // a real robot, this must be calculated based either on latency or timestamps.
+        // TODO: Create a PhotonCameraWrapper object
+        Optional<EstimatedRobotPose> result = pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
 
-    //     if (result.isPresent()) {
-    //         EstimatedRobotPose camPose = result.get();
-    //         m_poseEstimator.addVisionMeasurement(
-    //                 camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
-    //         m_fieldSim.getObject("Cam Est Pos").setPose(camPose.estimatedPose.toPose2d());
-    //     } else {
-    //         // move it way off the screen to make it disappear
-    //         m_fieldSim.getObject("Cam Est Pos").setPose(new Pose2d(-100, -100, new Rotation2d()));
-    //     }
+        // Don't worry about this if statement for the commented out stuff with m_fieldSim for now. That is debug/simulation stuff
+        if (result.isPresent()) {
+            EstimatedRobotPose camPose = result.get();
+            m_poseEstimator.addVisionMeasurement(
+                    camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+            // m_fieldSim.getObject("Cam Est Pos").setPose(camPose.estimatedPose.toPose2d());
+        } else {
+            // move it way off the screen to make it disappear
+            // m_fieldSim.getObject("Cam Est Pos").setPose(new Pose2d(-100, -100, new Rotation2d()));
+        }
 
-    //     m_fieldSim.getObject("Actual Pos").setPose(m_drivetrainSimulator.getPose());
-    //     m_fieldSim.setRobotPose(m_poseEstimator.getEstimatedPosition());
-    // }
+        // m_fieldSim.getObject("Actual Pos").setPose(m_drivetrainSimulator.getPose());
+        // m_fieldSim.setRobotPose(m_poseEstimator.getEstimatedPosition());
+    }
 }

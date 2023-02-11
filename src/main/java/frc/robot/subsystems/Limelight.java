@@ -30,6 +30,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
@@ -98,7 +99,7 @@ public class Limelight extends SubsystemBase {
     try {
       return AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
     } catch (IOException e) {
-      System.out.println("Unable to load AprilTagFieldLayout");
+      DriverStation.reportError("Unable to load April Tag Field Layout", true);
       e.printStackTrace();
       // return an empty AprilTagFieldLayout
       return new AprilTagFieldLayout(new ArrayList<AprilTag>(), FieldConstants.length, FieldConstants.width);

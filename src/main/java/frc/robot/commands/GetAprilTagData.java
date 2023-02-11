@@ -17,7 +17,7 @@ public class GetAprilTagData extends CommandBase {
   public GetAprilTagData(Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limelight = limelight;
-    //addRequirements(limelight);
+    addRequirements(limelight);
   }
 
   // Called when the command is initially scheduled.
