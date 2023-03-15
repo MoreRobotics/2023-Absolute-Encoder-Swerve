@@ -17,12 +17,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.GetSensorData;
 import frc.robot.commands.IdleLEDS;
 import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.LEDs;
 import edu.wpi.first.wpilibj.Timer;
 //import frc.lib.util.AbsoluteEncoder;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Arm;
 
 /**
@@ -37,6 +39,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  private Intake intake;
 
   private Command resetAbsolute;
 
@@ -64,6 +68,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    intake = new Intake();
 
     SmartDashboard.putBoolean("Compressor", true);
 
@@ -105,7 +110,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    
+    //m_robotContainer.ColorSensorWrapper();
 
   }
 

@@ -8,11 +8,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -22,7 +25,10 @@ public class Intake extends SubsystemBase {
     private CANSparkMax motor1;
     private CANSparkMax motor2;
     private DoubleSolenoid solenoid;
-    PneumaticHub pneumaticHub;
+    private PneumaticHub pneumaticHub;
+    ColorSensorV3 colorSensor;
+
+    private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
 
     public Intake() {
@@ -37,6 +43,8 @@ public class Intake extends SubsystemBase {
 
       pneumaticHub = new PneumaticHub(Constants.PNEUMATIC_HUB_ID);
       solenoid = pneumaticHub.makeDoubleSolenoid(Constants.PNEUMATIC_FORWARD_CHANNEL, Constants.PNEUMATIC_REVERSE_CHANEL);
+
+      ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
     }
 
@@ -66,7 +74,18 @@ public class Intake extends SubsystemBase {
       
     }
 
+    public Color getColor() {
+      return colorSensor.getColor();
+    }
 
+    public double getIR() {
+      return colorSensor.getIR();
+    }
+
+    public int getDistance() {
+      return colorSensor.getProximity();
+    }
+ 
     @Override
     public void periodic() {
       // This method will be called once per scheduler run

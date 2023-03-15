@@ -421,6 +421,11 @@ public class RobotContainer {
         );
         }
     
+    public void ColorSensorWrapper() {
+
+        new GetSensorData(intake);
+    }
+
     public void intakeHandler() {
 
         driverRB.whileTrue(new OpenIntake(intake));
