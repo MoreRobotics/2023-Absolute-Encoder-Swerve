@@ -10,6 +10,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj.DigitalInput;
+DigitalInput limitSwitch;
+DigitalInput toplimitSwitch = new DigitalInput(0);
+DigitalInput bottomlimitSwitch = new DigitalInput(1);
 
 public class CloseIntake extends CommandBase {
   
@@ -24,8 +28,9 @@ public class CloseIntake extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
-        intake.Extend();
+        if (toplimitSwitch.get()==1) {
+            intake.Extend();
+             end();
         
     }
 
