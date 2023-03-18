@@ -28,15 +28,15 @@ public class CloseIntake extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        if (toplimitSwitch.get()==1) {
-            intake.Extend();
-             end();
         
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        if (toplimitSwitch.get()==1) {
+            intake.Extend();
+             end();
     }
 
     // Called once the command ends or is interrupted.
