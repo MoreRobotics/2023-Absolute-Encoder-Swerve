@@ -41,6 +41,52 @@ import frc.robot.RobotMode.StateOptions;
 import frc.robot.RobotMode;
 
 public class Wrist extends SubsystemBase {
+
+  public static final int WRIST_MOTOR_ID = 20;
+  public static final int WRIST_ENCODER_ID = 1;
+  public static final double WRIST_FORWARD_LIMIT = 40;
+  public static final double WRIST_REVERSE_LIMIT = -90;
+  public static final double WRIST_GEAR_RATIO = 87.27;
+  public static final double WRIST_MOTOR_ROT_TO_DEG = 360.0 / WRIST_GEAR_RATIO;
+  public static final double MANUAL_WRIST_SPEED = 1.0;
+  public static final double WRIST_GROUND_POSITION = -95; //set value
+  // positions
+  public static final double WRIST_CONE_STOW_POSITION = 68.82;
+  public static final double WRIST_CONE_LOW_POSITION = -25.8;
+  public static final double WRIST_CONE_MID_POSITION = 0;
+  public static final double WRIST_CONE_HIGH_POSITION = 50;
+  public static final double WRIST_CONE_SINGLE_POSITION = 0;
+  public static final double WRIST_CONE_DOUBLE_POSITION = 0;
+  public static final double WRIST_CUBE_STOW_POSITION = 68.82;
+  public static final double WRIST_CUBE_LOW_POSITION = -25.8;
+  public static final double WRIST_CUBE_MID_POSITION = 0;
+  public static final double WRIST_CUBE_HIGH_POSITION = 50;
+  public static final double WRIST_CUBE_SINGLE_POSITION = 0;
+  public static final double WRIST_CUBE_DOUBLE_POSITION = 0;
+  public static final double WRIST_DEFAULT_STOW_POSITION = 68.82;
+  public static final double WRIST_DEFAULT_LOW_POSITION = -25.8;
+  public static final double WRIST_DEFAULT_MID_POSITION = 0;
+  public static final double WRIST_DEFAULT_HIGH_POSITION = 50;
+  public static final double WRIST_DEFAULT_SINGLE_POSITION = 0;
+  public static final double WRIST_DEFAULT_DOUBLE_POSITION = 0;
+    
+
+  public static final double WRIST_TOLERANCE = 20.0;
+  //Feedforward
+  public static final double WRIST_G = 0.2; //Its negative because the motors move the wrong direction
+  public static final double WRIST_V = 0.0;
+  public static final double WRIST_A = 0.0;
+  public static final double WRIST_S = 0.0;
+  //PID
+  public static final double WRIST_P = 0.5;
+  public static final double WRIST_I = 0.0;
+  public static final double WRIST_D = 0.0;
+
+  public static final double WRIST_ENCODER_OFFSET = 3.14;
+  public static final double TARGET_WRIST_ANGLE = 0;
+  public static final double WRIST_ENCODER_RATIO = 1.4545;
+
+
   public RelativeEncoder wristRelativeEncoder;
   public ProfiledPIDController controller;
 
@@ -48,7 +94,7 @@ public class Wrist extends SubsystemBase {
   private CANCoder wristCANEncoder;
   private ArmFeedforward ff;
   private double netPosition;
-  private double targetWristAngle = Constants.WRIST_DEFAULT_STOW_POSITION; //TODO: make not have initialization issue
+  private double targetWristAngle = WRIST_DEFAULT_STOW_POSITION; //TODO: make not have initialization issue
   private double voltage;
 
   // Logging objects
@@ -71,35 +117,35 @@ public class Wrist extends SubsystemBase {
   /** Creates a new wrist. */
   public Wrist() {
 
-    wristMotor = new CANSparkMax(Constants.WRIST_MOTOR_ID, MotorType.kBrushless);
-    wristCANEncoder = new CANCoder(Constants.WRIST_ENCODER_ID);
+    wristMotor = new CANSparkMax(WRIST_MOTOR_ID, MotorType.kBrushless);
+    wristCANEncoder = new CANCoder(WRIST_ENCODER_ID);
     wristMotor.setIdleMode(IdleMode.kBrake);
     wristMotor.setInverted(true);
-    this.ff = new ArmFeedforward(Constants.WRIST_S, Constants.WRIST_G, Constants.WRIST_V, Constants.WRIST_A);
+    this.ff = new ArmFeedforward(WRIST_S, WRIST_G, WRIST_V, WRIST_A);
 
     wristMotor.setSmartCurrentLimit(40);
 
   // wristMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
   //wristMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
- // wristMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.wrist_FORWARD_LIMIT);
-//wristMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.wrist_REVERSE_LIMIT);
+ // wristMotor.setSoftLimit(SoftLimitDirection.kForward, wrist_FORWARD_LIMIT);
+//wristMotor.setSoftLimit(SoftLimitDirection.kReverse, wrist_REVERSE_LIMIT);
   
-    this.controller = new ProfiledPIDController(Constants.WRIST_P, Constants.WRIST_I, Constants.WRIST_D, new Constraints(800, 1000));
+    this.controller = new ProfiledPIDController(WRIST_P, WRIST_I, WRIST_D, new Constraints(800, 1000));
     this.controller.setTolerance(1, 1);
     wristCANEncoder.configFactoryDefault();
-    wristCANEncoder.configMagnetOffset(Constants.WRIST_ENCODER_OFFSET);
+    wristCANEncoder.configMagnetOffset(WRIST_ENCODER_OFFSET);
     wristCANEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
     wristCANEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
     wristCANEncoder.configSensorDirection(true);
     
     wristRelativeEncoder = wristMotor.getEncoder();
-    //wristRelativeEncoder.setPositionConversionFactor(Constants.wrist_GEAR_RATIO);
-    wristRelativeEncoder.setPositionConversionFactor(Constants.WRIST_MOTOR_ROT_TO_DEG);
-    wristRelativeEncoder.setVelocityConversionFactor(Constants.WRIST_MOTOR_ROT_TO_DEG);
+    //wristRelativeEncoder.setPositionConversionFactor(wrist_GEAR_RATIO);
+    wristRelativeEncoder.setPositionConversionFactor(WRIST_MOTOR_ROT_TO_DEG);
+    wristRelativeEncoder.setVelocityConversionFactor(WRIST_MOTOR_ROT_TO_DEG);
 
-    wristRelativeEncoder.setPosition(getPositionInDegreesCanCoder() / Constants.WRIST_MOTOR_ROT_TO_DEG);
+    wristRelativeEncoder.setPosition(getPositionInDegreesCanCoder() / WRIST_MOTOR_ROT_TO_DEG);
     wristRelativeEncoder.setPositionConversionFactor(1);
-    wristRelativeEncoder.setVelocityConversionFactor(Constants.WRIST_GEAR_RATIO);
+    wristRelativeEncoder.setVelocityConversionFactor(WRIST_GEAR_RATIO);
 
     // Create logger object 
     logger = DataLogManager.getLog();
@@ -127,7 +173,7 @@ public class Wrist extends SubsystemBase {
 
   /* Always use this method when you want the position of the wrist */
   public double getPositionInDegreesCanCoder() {
-    return wristCANEncoder.getAbsolutePosition() / Constants.WRIST_ENCODER_RATIO;
+    return wristCANEncoder.getAbsolutePosition() / WRIST_ENCODER_RATIO;
   }
 
   public double getPositionInDegreesIntegrated() {
@@ -140,7 +186,7 @@ public class Wrist extends SubsystemBase {
 
   /* Always use this method when you want the velocity of the wrist */
   public double getVelocityInDegreesCanCoder() {
-    return wristCANEncoder.getVelocity() / Constants.WRIST_ENCODER_RATIO;
+    return wristCANEncoder.getVelocity() / WRIST_ENCODER_RATIO;
   }
 
   //Sets the targetWristAngle in degrees */
@@ -152,31 +198,31 @@ public class Wrist extends SubsystemBase {
     if (mode == RobotMode.ModeOptions.CUBE) {
 
       if (state == RobotMode.StateOptions.LOW) {
-        targetWristAngle = Constants.WRIST_CUBE_LOW_POSITION;
+        targetWristAngle = WRIST_CUBE_LOW_POSITION;
       } else if (state == RobotMode.StateOptions.MID) {
-          targetWristAngle = Constants.WRIST_CUBE_MID_POSITION;
+          targetWristAngle = WRIST_CUBE_MID_POSITION;
       } else if (state == RobotMode.StateOptions.HIGH) {
-          targetWristAngle = Constants.WRIST_CUBE_HIGH_POSITION;
+          targetWristAngle = WRIST_CUBE_HIGH_POSITION;
       } else if (state == RobotMode.StateOptions.SINGLE) {
-          targetWristAngle = Constants.WRIST_CUBE_SINGLE_POSITION;
+          targetWristAngle = WRIST_CUBE_SINGLE_POSITION;
       } else if (state == RobotMode.StateOptions.DOUBLE) {
-          targetWristAngle = Constants.WRIST_CUBE_DOUBLE_POSITION;
+          targetWristAngle = WRIST_CUBE_DOUBLE_POSITION;
       } else {
-          targetWristAngle = Constants.WRIST_CUBE_STOW_POSITION;
+          targetWristAngle = WRIST_CUBE_STOW_POSITION;
       }
   } else {
       if (state == RobotMode.StateOptions.LOW) {
-          targetWristAngle = Constants.WRIST_CONE_LOW_POSITION;
+          targetWristAngle = WRIST_CONE_LOW_POSITION;
       } else if (state == RobotMode.StateOptions.MID) {
-          targetWristAngle = Constants.WRIST_CONE_MID_POSITION;
+          targetWristAngle = WRIST_CONE_MID_POSITION;
       } else if (state == RobotMode.StateOptions.HIGH) {
-          targetWristAngle = Constants.WRIST_CONE_HIGH_POSITION;
+          targetWristAngle = WRIST_CONE_HIGH_POSITION;
       } else if (state == RobotMode.StateOptions.SINGLE) {
-          targetWristAngle = Constants.WRIST_CONE_SINGLE_POSITION;
+          targetWristAngle = WRIST_CONE_SINGLE_POSITION;
       } else if (state == RobotMode.StateOptions.DOUBLE) {
-          targetWristAngle = Constants.WRIST_CONE_DOUBLE_POSITION;
+          targetWristAngle = WRIST_CONE_DOUBLE_POSITION;
       } else {
-          targetWristAngle = Constants.WRIST_CONE_STOW_POSITION;
+          targetWristAngle = WRIST_CONE_STOW_POSITION;
       }
         }
 
@@ -186,19 +232,19 @@ public class Wrist extends SubsystemBase {
 
   public void moveWristUp() {
     
-    targetWristAngle = targetWristAngle + Constants.MANUAL_WRIST_SPEED;
+    targetWristAngle = targetWristAngle + MANUAL_WRIST_SPEED;
 
-    if (targetWristAngle >= Constants.WRIST_FORWARD_LIMIT) {
-        targetWristAngle = Constants.WRIST_FORWARD_LIMIT;
+    if (targetWristAngle >= WRIST_FORWARD_LIMIT) {
+        targetWristAngle = WRIST_FORWARD_LIMIT;
     }
 
   }
 
   public void moveWristDown() {
-    targetWristAngle = targetWristAngle - Constants.MANUAL_WRIST_SPEED;
+    targetWristAngle = targetWristAngle - MANUAL_WRIST_SPEED;
 
-    if (targetWristAngle <= Constants.WRIST_REVERSE_LIMIT) {
-        targetWristAngle = Constants.WRIST_REVERSE_LIMIT;
+    if (targetWristAngle <= WRIST_REVERSE_LIMIT) {
+        targetWristAngle = WRIST_REVERSE_LIMIT;
     }
   }
 
@@ -206,7 +252,7 @@ public class Wrist extends SubsystemBase {
 
     double error = Math.abs(Math.abs(getPositionInDegreesCanCoder()) - Math.abs(targetWristAngle));
 
-    if (Constants.WRIST_TOLERANCE >= error) {
+    if (WRIST_TOLERANCE >= error) {
 
         return true;
 
@@ -217,7 +263,7 @@ public class Wrist extends SubsystemBase {
   }
 
   public boolean isSafeToGround() {
-    return getPositionInDegreesCanCoder() < Constants.WRIST_REVERSE_LIMIT;
+    return getPositionInDegreesCanCoder() < WRIST_REVERSE_LIMIT;
   }
 
   @Override

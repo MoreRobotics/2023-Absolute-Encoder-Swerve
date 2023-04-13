@@ -11,56 +11,24 @@ import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
+
+    //control
+    public static final int DRIVER_PORT = 0;
+    public static final int OPERATOR_PORT = 1;
     public static final double stickDeadband = 0.1;
-    public static final double MAX_ENCODER_VOLTAGE = 4.926;
+    public static final int GRYO_OFFSET = 0;
 
-    /* WRIST Constants */
-    // TODO: Change later when we have actual robot
-    public static final int WRIST_MOTOR_ID = 20;
-    public static final int WRIST_ENCODER_ID = 1;
-    public static final double WRIST_FORWARD_LIMIT = 40;
-    public static final double WRIST_REVERSE_LIMIT = -90;
-    public static final double WRIST_GEAR_RATIO = 87.27;
-    public static final double WRIST_MOTOR_ROT_TO_DEG = 360.0 / WRIST_GEAR_RATIO;
-    public static final double MANUAL_WRIST_SPEED = 1.0;
-    public static final double WRIST_GROUND_POSITION = -95; //set value
+    //auto rotate
+    public static final double ROTATE_KP = 0.01; //0.0222
+    public static final double ROTATE_KI = 0.0;
+    public static final double ROTATE_KD = 0.0;
+    public static final double ROTATE_VELOCITY = 200.0;
+    public static final double ROTATE_ACCELERATION = 400.0;
+    public static final double ROTATE_TO_SCORE_TARGET_ANGLE = 180.0;
+    public static final double ROTATE_TO_LOAD_TARGET_ANGLE = 0.0;
+    public static final double AUTO_ROTATE_DEADBAND = 0.3;
 
-    // positions
-    public static final double WRIST_CONE_STOW_POSITION = 68.82;
-    public static final double WRIST_CONE_LOW_POSITION = -25.8;
-    public static final double WRIST_CONE_MID_POSITION = 0;
-    public static final double WRIST_CONE_HIGH_POSITION = 50;
-    public static final double WRIST_CONE_SINGLE_POSITION = 0;
-    public static final double WRIST_CONE_DOUBLE_POSITION = 0;
-
-    public static final double WRIST_CUBE_STOW_POSITION = 68.82;
-    public static final double WRIST_CUBE_LOW_POSITION = -25.8;
-    public static final double WRIST_CUBE_MID_POSITION = 0;
-    public static final double WRIST_CUBE_HIGH_POSITION = 50;
-    public static final double WRIST_CUBE_SINGLE_POSITION = 0;
-    public static final double WRIST_CUBE_DOUBLE_POSITION = 0;
-
-    public static final double WRIST_DEFAULT_STOW_POSITION = 68.82;
-    public static final double WRIST_DEFAULT_LOW_POSITION = -25.8;
-    public static final double WRIST_DEFAULT_MID_POSITION = 0;
-    public static final double WRIST_DEFAULT_HIGH_POSITION = 50;
-    public static final double WRIST_DEFAULT_SINGLE_POSITION = 0;
-    public static final double WRIST_DEFAULT_DOUBLE_POSITION = 0;
-    
-
-    public static final double WRIST_TOLERANCE = 20.0;
-
-    //Feedforward
-    public static final double WRIST_G = 0.2; //Its negative because the motors move the wrong direction
-    public static final double WRIST_V = 0.0;
-    public static final double WRIST_A = 0.0;
-    public static final double WRIST_S = 0.0;
-
-    //PID
-    public static final double WRIST_P = 0.5;
-    public static final double WRIST_I = 0.0;
-    public static final double WRIST_D = 0.0;
-
+    //auto
     public static final double AUTO_X_P = 4;
     public static final double AUTO_X_I = 0;
     public static final double AUTO_X_D = 0;
@@ -72,93 +40,16 @@ public final class Constants {
     public static final double AUTO_R_P = 6;
     public static final double AUTO_R_I = 0;
     public static final double AUTO_R_D = 0;
-    
-    
-    //TODO: Set offset
-    public static final double WRIST_ENCODER_OFFSET = 3.14;
-    public static final double TARGET_WRIST_ANGLE = 0;
 
-    public static final double INTAKE_SPEED = 1.0;
-    public static int INTAKE_MOTOR_1_ID = 12;
-    public static int INTAKE_MOTOR_2_ID = 11;
-    
+    public static final double AUTO_VEL = 2.0;
+    public static final double AUTO_ACC = 2.0;
+
+
+    //pneumatics
     public static final int PNEUMATIC_HUB_ID = 15;
     public static final int PNEUMATIC_FORWARD_CHANNEL = 14;
     public static final int PNEUMATIC_REVERSE_CHANEL = 15;
 
-    public static final int CANDLE_PORT = 9;
-    public static final double WRIST_ENCODER_RATIO = 1.4545;
-
-    /* Elevator Constants */
-    public static final int FORWARD_ELEVATOR_LIMIT = 26;
-    public static final float REVERSE_ELEVATOR_LIMIT = (float) -0.5;
-    public static final int ELEVATOR_MOTOR_ID = 16;
-    public static final double ELEVATOR_GEAR_RATIO = 9.0;
-    public static final double ELEVATOR_SPROCKET_DIAMETER = 1.751;
-    public static final double ELEVATOR_ROTATIONS_TO_IN = 1.0/ELEVATOR_GEAR_RATIO * ELEVATOR_SPROCKET_DIAMETER * Math.PI;
-    public static final double MANUAL_ELEVATOR_SPEED = 0.50;
-    public static final double ELEVATOR_P = 1.0;
-    public static final double ELEVATOR_I = 0.0;
-    public static final double ELEVATOR_D = 0.0;
-
-    public static final double ELEVATOR_CONE_HIGH_LEVEL = 26;
-    public static final double ELEVATOR_CONE_MID_LEVEL = 8.5;
-    public static final double ELEVATOR_CONE_LOW_LEVEL = REVERSE_ELEVATOR_LIMIT;
-    public static final double ELEVATOR_CONE_SAFE_LEVEL = 10.0;
-    public static final double ELEVATOR_CONE_STOW_LEVEL = 6.0;
-    public static final double ELEVATOR_CONE_SINGLE_POSITION = 4;
-    public static final double ELEVATOR_CONE_DOUBLE_POSITION = 4;
-
-    public static final double ELEVATOR_CUBE_HIGH_LEVEL = 26;
-    public static final double ELEVATOR_CUBE_MID_LEVEL = 8.5;
-    public static final double ELEVATOR_CUBE_LOW_LEVEL = REVERSE_ELEVATOR_LIMIT;
-    public static final double ELEVATOR_CUBE_SAFE_LEVEL = 10.0;
-    public static final double ELEVATOR_CUBE_STOW_LEVEL = 6.0;
-    public static final double ELEVATOR_CUBE_SINGLE_POSITION = 4;
-    public static final double ELEVATOR_CUBE_DOUBLE_POSITION = 4;
-
-    public static final double ELEVATOR_DEFUALT_HIGH_LEVEL = 26;
-    public static final double ELEVATOR_DEFUALT_MID_LEVEL = 8.5;
-    public static final double ELEVATOR_DEFUALT_LOW_LEVEL = REVERSE_ELEVATOR_LIMIT;
-    public static final double ELEVATOR_DEFUALT_SAFE_LEVEL = 10.0;
-    public static final double ELEVATOR_DEFUALT_STOW_LEVEL = 6.0;
-    public static final double ELEVATOR_DEFUALT_SINGLE_POSITION = 4;
-    public static final double ELEVATOR_DEFUALT_DOUBLE_POSITION = 4;
-
-    public static final double ELEVATOR_TOLERANCE = 20;
-
-    public static final int GRYO_OFFSET = 0;
-
-    public static final int DRIVER_PORT = 0;
-    public static final int OPERATOR_PORT = 1;
-
-    // auto balancing constants
-    public static final double AUTO_BALANCE_P = 0.03;
-    public static final double AUTO_BALANCE_I = 0.00;
-    public static final double AUTO_BALANCE_D = 0.01;
-    public static final double RED_BALANCE_LEVEL = -2.4;
-    public static final double BLUE_BALANCE_LEVEL = -2.4;
-    public static final double BALANCE_LEVEL_DEADZONE = 5.0;
-    public static final double WHEEL_LOCK_TIME = 0.1;
-
-     /* PID Rotation */ 
-     public static final double ROTATE_KP = 0.01; //0.0222
-     public static final double ROTATE_KI = 0.0;
-     public static final double ROTATE_KD = 0.0;
-     public static final double ROTATE_VELOCITY = 200.0;
-     public static final double ROTATE_ACCELERATION = 400.0;
-     public static final double ROTATE_TO_SCORE_TARGET_ANGLE = 180.0;
-     public static final double ROTATE_TO_LOAD_TARGET_ANGLE = 0.0;
-     public static final double AUTO_ROTATE_DEADBAND = 5.0;
-
-     /* slow mode */
-     public static final double SLOW_MODE_PERCENT_TRANSLATION = 0.5;
-     public static final double SLOW_MODE_PERCENT_STRAFE = 0.5;
-     public static final double SLOW_MODE_PERCENT_ROTATION = 0.5;
-
-     /* auto */
-    public static final double AUTO_VEL = 2.0;
-    public static final double AUTO_ACC = 2.0;
 
     public static final class Swerve {
         public static final int pigeonID = 8;

@@ -28,7 +28,7 @@ public class RunIntake extends CommandBase {
     @Override
     public void initialize() {
 
-        intake.Run(Constants.INTAKE_SPEED);
+        intake.Run(Intake.INTAKE_SPEED);
         SmartDashboard.putBoolean("driver/ Intake Direction", true);
         
     }

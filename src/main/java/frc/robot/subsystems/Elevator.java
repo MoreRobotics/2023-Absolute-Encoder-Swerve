@@ -36,6 +36,43 @@ import frc.robot.RobotMode.StateOptions;
 
 
 public class Elevator extends SubsystemBase {
+
+    public static final int FORWARD_ELEVATOR_LIMIT = 26;
+    public static final float REVERSE_ELEVATOR_LIMIT = (float) -0.5;
+    public static final int ELEVATOR_MOTOR_ID = 16;
+    public static final double ELEVATOR_GEAR_RATIO = 9.0;
+    public static final double ELEVATOR_SPROCKET_DIAMETER = 1.751;
+    public static final double ELEVATOR_ROTATIONS_TO_IN = 1.0/ELEVATOR_GEAR_RATIO * ELEVATOR_SPROCKET_DIAMETER * Math.PI;
+    public static final double MANUAL_ELEVATOR_SPEED = 0.50;
+    public static final double ELEVATOR_P = 1.0;
+    public static final double ELEVATOR_I = 0.0;
+    public static final double ELEVATOR_D = 0.0;
+
+    public static final double ELEVATOR_CONE_HIGH_LEVEL = 26;
+    public static final double ELEVATOR_CONE_MID_LEVEL = 8.5;
+    public static final double ELEVATOR_CONE_LOW_LEVEL = REVERSE_ELEVATOR_LIMIT;
+    public static final double ELEVATOR_CONE_SAFE_LEVEL = 10.0;
+    public static final double ELEVATOR_CONE_STOW_LEVEL = 6.0;
+    public static final double ELEVATOR_CONE_SINGLE_POSITION = 4;
+    public static final double ELEVATOR_CONE_DOUBLE_POSITION = 4;
+
+    public static final double ELEVATOR_CUBE_HIGH_LEVEL = 26;
+    public static final double ELEVATOR_CUBE_MID_LEVEL = 8.5;
+    public static final double ELEVATOR_CUBE_LOW_LEVEL = REVERSE_ELEVATOR_LIMIT;
+    public static final double ELEVATOR_CUBE_SAFE_LEVEL = 10.0;
+    public static final double ELEVATOR_CUBE_STOW_LEVEL = 6.0;
+    public static final double ELEVATOR_CUBE_SINGLE_POSITION = 4;
+    public static final double ELEVATOR_CUBE_DOUBLE_POSITION = 4;
+
+    public static final double ELEVATOR_DEFUALT_HIGH_LEVEL = 26;
+    public static final double ELEVATOR_DEFUALT_MID_LEVEL = 8.5;
+    public static final double ELEVATOR_DEFUALT_LOW_LEVEL = REVERSE_ELEVATOR_LIMIT;
+    public static final double ELEVATOR_DEFUALT_SAFE_LEVEL = 10.0;
+    public static final double ELEVATOR_DEFUALT_STOW_LEVEL = 6.0;
+    public static final double ELEVATOR_DEFUALT_SINGLE_POSITION = 4;
+    public static final double ELEVATOR_DEFUALT_DOUBLE_POSITION = 4;
+
+    public static final double ELEVATOR_TOLERANCE = 20;
   
     public RelativeEncoder elevatorEncoder;
     private CANSparkMax elevatorMotor;
@@ -57,12 +94,12 @@ public class Elevator extends SubsystemBase {
     // private DoubleLogEntry elevatorEncoderVelocity;
 
     public Elevator() {
-        elevatorMotor = new CANSparkMax(Constants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
+        elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
         //TODO: Set Current Limiters
         elevatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
         elevatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-        elevatorMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.FORWARD_ELEVATOR_LIMIT);
-        elevatorMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.REVERSE_ELEVATOR_LIMIT);
+        elevatorMotor.setSoftLimit(SoftLimitDirection.kForward, FORWARD_ELEVATOR_LIMIT);
+        elevatorMotor.setSoftLimit(SoftLimitDirection.kReverse, REVERSE_ELEVATOR_LIMIT);
         elevatorEncoder = elevatorMotor.getEncoder(); 
         elevatorMotor.setIdleMode(IdleMode.kBrake);
 
@@ -72,13 +109,13 @@ public class Elevator extends SubsystemBase {
         /*Rate of Speed (Based on 930 Code) */
 
         // double p = SmartDashboard.getNumber("p", 0);
-        this.controller = new ProfiledPIDController(Constants.ELEVATOR_P, Constants.ELEVATOR_I, Constants.ELEVATOR_D, new Constraints(80, 1000));
+        this.controller = new ProfiledPIDController(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D, new Constraints(80, 1000));
         this.controller.setTolerance(100, 100);
         // TODO: Recalculate these constants
         //this.ff = new ElevatorFeedforward(0, 0.16, 0.18, 0.02);
 
-        elevatorEncoder.setPositionConversionFactor(Constants.ELEVATOR_ROTATIONS_TO_IN);
-        elevatorEncoder.setVelocityConversionFactor(Constants.ELEVATOR_ROTATIONS_TO_IN);
+        elevatorEncoder.setPositionConversionFactor(ELEVATOR_ROTATIONS_TO_IN);
+        elevatorEncoder.setVelocityConversionFactor(ELEVATOR_ROTATIONS_TO_IN);
 
         // Create logger object 
         logger = DataLogManager.getLog();
@@ -104,33 +141,33 @@ public class Elevator extends SubsystemBase {
         if (mode == RobotMode.ModeOptions.CUBE) {
 
             if (state == RobotMode.StateOptions.LOW) {
-                targetElevatorPosition = Constants.ELEVATOR_CUBE_LOW_LEVEL;
+                targetElevatorPosition = ELEVATOR_CUBE_LOW_LEVEL;
             } else if (state == RobotMode.StateOptions.MID) {
-                targetElevatorPosition = Constants.ELEVATOR_CUBE_MID_LEVEL;
+                targetElevatorPosition = ELEVATOR_CUBE_MID_LEVEL;
             } else if (state == RobotMode.StateOptions.HIGH) {
-                targetElevatorPosition = Constants.ELEVATOR_CUBE_HIGH_LEVEL;
+                targetElevatorPosition = ELEVATOR_CUBE_HIGH_LEVEL;
             } else if (state == RobotMode.StateOptions.SINGLE) {
-                targetElevatorPosition = Constants.ELEVATOR_CUBE_SINGLE_POSITION;
+                targetElevatorPosition = ELEVATOR_CUBE_SINGLE_POSITION;
             } else if (state == RobotMode.StateOptions.DOUBLE) {
-                targetElevatorPosition = Constants.ELEVATOR_CUBE_DOUBLE_POSITION;
+                targetElevatorPosition = ELEVATOR_CUBE_DOUBLE_POSITION;
             } else {
-                targetElevatorPosition = Constants.ELEVATOR_CUBE_STOW_LEVEL;
+                targetElevatorPosition = ELEVATOR_CUBE_STOW_LEVEL;
             }
 
         } else {
 
             if (state == RobotMode.StateOptions.LOW) {
-                targetElevatorPosition = Constants.ELEVATOR_CONE_LOW_LEVEL;
+                targetElevatorPosition = ELEVATOR_CONE_LOW_LEVEL;
             } else if (state == RobotMode.StateOptions.MID) {
-                targetElevatorPosition = Constants.ELEVATOR_CONE_MID_LEVEL;
+                targetElevatorPosition = ELEVATOR_CONE_MID_LEVEL;
             } else if (state == RobotMode.StateOptions.HIGH) {
-                targetElevatorPosition = Constants.ELEVATOR_CONE_HIGH_LEVEL;
+                targetElevatorPosition = ELEVATOR_CONE_HIGH_LEVEL;
             } else if (state == RobotMode.StateOptions.SINGLE) {
-                targetElevatorPosition = Constants.ELEVATOR_CONE_SINGLE_POSITION;
+                targetElevatorPosition = ELEVATOR_CONE_SINGLE_POSITION;
             } else if (state == RobotMode.StateOptions.DOUBLE) {
-                targetElevatorPosition = Constants.ELEVATOR_CONE_DOUBLE_POSITION;
+                targetElevatorPosition = ELEVATOR_CONE_DOUBLE_POSITION;
             } else {
-                targetElevatorPosition = Constants.ELEVATOR_CONE_STOW_LEVEL;
+                targetElevatorPosition = ELEVATOR_CONE_STOW_LEVEL;
             }
         }
 
@@ -144,20 +181,20 @@ public class Elevator extends SubsystemBase {
 
     public void extend() {
 
-        targetElevatorPosition = targetElevatorPosition + Constants.MANUAL_ELEVATOR_SPEED;
+        targetElevatorPosition = targetElevatorPosition + MANUAL_ELEVATOR_SPEED;
 
-        if (targetElevatorPosition >= Constants.FORWARD_ELEVATOR_LIMIT) {
-            targetElevatorPosition = Constants.FORWARD_ELEVATOR_LIMIT;
+        if (targetElevatorPosition >= FORWARD_ELEVATOR_LIMIT) {
+            targetElevatorPosition = FORWARD_ELEVATOR_LIMIT;
         }
 
     }
 
     public void retract() {
 
-        targetElevatorPosition = targetElevatorPosition - Constants.MANUAL_ELEVATOR_SPEED;
+        targetElevatorPosition = targetElevatorPosition - MANUAL_ELEVATOR_SPEED;
 
-        if (targetElevatorPosition <= Constants.REVERSE_ELEVATOR_LIMIT) {
-            targetElevatorPosition = Constants.REVERSE_ELEVATOR_LIMIT;
+        if (targetElevatorPosition <= REVERSE_ELEVATOR_LIMIT) {
+            targetElevatorPosition = REVERSE_ELEVATOR_LIMIT;
         }
         
     }
@@ -171,18 +208,18 @@ public class Elevator extends SubsystemBase {
     }
 
     private double motorRotationsToInches(double rotations) {
-        return rotations * Constants.ELEVATOR_ROTATIONS_TO_IN;
+        return rotations * ELEVATOR_ROTATIONS_TO_IN;
     }
 
     private double inchesToMotorRotations(double inches) {
-        return inches / Constants.ELEVATOR_ROTATIONS_TO_IN;
+        return inches / ELEVATOR_ROTATIONS_TO_IN;
     }
 
     public boolean atPosition() {
 
         double error = Math.abs(elevatorEncoder.getPosition() - targetElevatorPosition);
 
-        if (Constants.ELEVATOR_TOLERANCE >= error) {
+        if (ELEVATOR_TOLERANCE >= error) {
             return true;
 
         } else {
@@ -192,7 +229,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public Boolean isHigh(){
-        return getTargetElevatorPosition() == Constants.ELEVATOR_DEFUALT_HIGH_LEVEL;
+        return getTargetElevatorPosition() == ELEVATOR_DEFUALT_HIGH_LEVEL;
     }
     
     @Override

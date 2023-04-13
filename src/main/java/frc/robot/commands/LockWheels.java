@@ -14,6 +14,8 @@ import frc.robot.subsystems.Swerve;
 
 public class LockWheels extends CommandBase {
 
+  public static final double WHEEL_LOCK_TIME = 0.1;
+
   Swerve swerve;
 
   /** Creates a new DriveForward. */
@@ -27,7 +29,7 @@ public class LockWheels extends CommandBase {
   @Override
   public void initialize() {
     //TODO lock drive wheels
-    new ParallelDeadlineGroup(new WaitCommand(Constants.WHEEL_LOCK_TIME), swerve.LockWheels());
+    new ParallelDeadlineGroup(new WaitCommand(WHEEL_LOCK_TIME), swerve.LockWheels());
   }
 
   // Called every time the scheduler runs while the command is scheduled.

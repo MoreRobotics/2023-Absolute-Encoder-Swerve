@@ -22,6 +22,13 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class AutoBalance extends CommandBase {
 
+  public static final double AUTO_BALANCE_P = 0.03;
+  public static final double AUTO_BALANCE_I = 0.00;
+  public static final double AUTO_BALANCE_D = 0.01;
+  public static final double RED_BALANCE_LEVEL = -2.4;
+  public static final double BLUE_BALANCE_LEVEL = -2.4;
+  public static final double BALANCE_LEVEL_DEADZONE = 5.0;
+
   Swerve swerve;
   PIDController pid;
   Alliance alliance;
@@ -32,7 +39,7 @@ public class AutoBalance extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     this.swerve = swerve;
 
-    pid = new PIDController(Constants.AUTO_BALANCE_P, Constants.AUTO_BALANCE_I, Constants.AUTO_BALANCE_D);
+    pid = new PIDController(AUTO_BALANCE_P, AUTO_BALANCE_I, AUTO_BALANCE_D);
     addRequirements(this.swerve);
     alliance = DriverStation.getAlliance();
   }
@@ -43,11 +50,11 @@ public class AutoBalance extends CommandBase {
 
     if (alliance == Alliance.Red) {
 
-      balanceVar = Constants.RED_BALANCE_LEVEL;
+      balanceVar = RED_BALANCE_LEVEL;
 
     } else if (alliance == Alliance.Blue) {
 
-      balanceVar = Constants.BLUE_BALANCE_LEVEL;
+      balanceVar = BLUE_BALANCE_LEVEL;
 
     }
 
@@ -58,12 +65,12 @@ public class AutoBalance extends CommandBase {
   public void execute() {
 
     double angle = swerve.getRoll().getDegrees();
-    // If we substract Constants.BALANCE_LEVEL that should make our PIDController treat Constants.BALANCE_LEVEL as level
+    // If we substract BALANCE_LEVEL that should make our PIDController treat BALANCE_LEVEL as level
 
     double pidVar = pid.calculate(angle - balanceVar);
     Translation2d move = new Translation2d(-pidVar, 0.0);
 
-    if (angle <= balanceVar + Constants.BALANCE_LEVEL_DEADZONE && angle >= balanceVar - Constants.BALANCE_LEVEL_DEADZONE) {
+    if (angle <= balanceVar + BALANCE_LEVEL_DEADZONE && angle >= balanceVar - BALANCE_LEVEL_DEADZONE) {
 
       
       System.out.println("balanced");

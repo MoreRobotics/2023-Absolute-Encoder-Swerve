@@ -16,7 +16,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
-public class TeleopSwerve extends CommandBase {    
+public class TeleopSwerve extends CommandBase {
+
+    public static final double SLOW_MODE_PERCENT_TRANSLATION = 0.5;
+    public static final double SLOW_MODE_PERCENT_STRAFE = 0.5;
+    public static final double SLOW_MODE_PERCENT_ROTATION = 0.5;
+
     public Swerve s_Swerve;    
     private DoubleSupplier translationSup;
     private DoubleSupplier strafeSup;
@@ -64,9 +69,9 @@ public class TeleopSwerve extends CommandBase {
 
         /*slowmode*/
         if (slowModeSup.getAsBoolean()) {
-            translationVal = translationVal * Constants.SLOW_MODE_PERCENT_TRANSLATION;
-            strafeVal = strafeVal * Constants.SLOW_MODE_PERCENT_STRAFE;
-            rotationVal = rotationVal * Constants.SLOW_MODE_PERCENT_ROTATION;
+            translationVal = translationVal * SLOW_MODE_PERCENT_TRANSLATION;
+            strafeVal = strafeVal * SLOW_MODE_PERCENT_STRAFE;
+            rotationVal = rotationVal * SLOW_MODE_PERCENT_ROTATION;
         }
         
         /* Rotate to Score */

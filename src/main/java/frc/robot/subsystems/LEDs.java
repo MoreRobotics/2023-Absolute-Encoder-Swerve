@@ -15,9 +15,10 @@ import frc.robot.RobotMode;
 import frc.robot.commands.YellowLED;
 
 public class LEDs extends SubsystemBase{
-   
+
+    public static final int CANDLE_PORT = 9;  
     
-    CANdle candle = new CANdle(Constants.CANDLE_PORT);
+    CANdle candle = new CANdle(CANDLE_PORT);
     
     public LEDs() {
 
