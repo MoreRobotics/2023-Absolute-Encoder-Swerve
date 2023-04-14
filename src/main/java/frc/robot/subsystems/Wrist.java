@@ -48,8 +48,11 @@ public class Wrist extends SubsystemBase {
   private CANCoder wristCANEncoder;
   private ArmFeedforward ff;
   private double netPosition;
-  private double targetWristAngle = Constants.WRIST_DEFAULT_STOW_POSITION; //TODO: make not have initialization issue
+  public double targetWristAngle = Constants.WRIST_DEFAULT_STOW_POSITION; //TODO: make not have initialization issue
   private double voltage;
+
+  private ModeOptions mode = RobotMode.mode;
+  private StateOptions state = RobotMode.state;
 
   // Logging objects
   private DataLog logger;
@@ -146,9 +149,6 @@ public class Wrist extends SubsystemBase {
   //Sets the targetWristAngle in degrees */
   public void setTargetWristAngle() {
 
-    ModeOptions mode = RobotMode.mode;
-    StateOptions state = RobotMode.state;
-
     if (mode == RobotMode.ModeOptions.CUBE) {
 
       if (state == RobotMode.StateOptions.LOW) {
@@ -182,6 +182,18 @@ public class Wrist extends SubsystemBase {
 
 
     
+  }
+
+  public void wristCheck() throws InterruptedException {
+    if ((state == RobotMode.StateOptions.HIGH || state == RobotMode.StateOptions.MID)
+     && ( getPositionInDegreesCanCoder() <= Constants.WRIST_CONE_STOW_POSITION + Constants.WRIST_STOW_DEADZONE && getPositionInDegreesCanCoder() >= Constants.WRIST_CONE_STOW_POSITION)) {
+
+      targetWristAngle = Constants.WRIST_CONE_LOW_POSITION;
+      Elevator.targetElevatorPosition = Constants.ELEVATOR_CONE_LOW_LEVEL;
+      Thread.sleep((long) 0.5);
+
+
+     }
   }
 
   public void moveWristUp() {

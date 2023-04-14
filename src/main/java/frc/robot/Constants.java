@@ -47,7 +47,7 @@ public final class Constants {
     public static final double WRIST_DEFAULT_SINGLE_POSITION = 0;
     public static final double WRIST_DEFAULT_DOUBLE_POSITION = 0;
     
-
+    public static final double WRIST_STOW_DEADZONE = 5.0;
     public static final double WRIST_TOLERANCE = 20.0;
 
     //Feedforward

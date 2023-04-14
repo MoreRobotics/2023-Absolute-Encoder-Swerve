@@ -41,7 +41,7 @@ public class Elevator extends SubsystemBase {
     private CANSparkMax elevatorMotor;
     private ProfiledPIDController controller;
     private ElevatorFeedforward ff;
-    private double targetElevatorPosition;
+    public double targetElevatorPosition;
 
     /* Logging */
     private DataLog logger;
