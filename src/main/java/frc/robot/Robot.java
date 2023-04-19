@@ -49,6 +49,9 @@ public class Robot extends TimedRobot {
     /* Logging objects */
     private DataLog logger;
     private DoubleLogEntry loopTime;
+    private DoubleLogEntry PDTotalEnergy;
+
+    /* Timer objects for logging */
     private Timer timer;
     private double previousTime;
 
@@ -67,7 +70,8 @@ public class Robot extends TimedRobot {
     // Start recording all DS control and joystick data
     DriverStation.startDataLog(logger);
 
-    loopTime = new DoubleLogEntry(logger, "Swerve/loopTime");
+    loopTime = new DoubleLogEntry(logger, "loopTime");
+    PDTotalEnergy = new DoubleLogEntry(logger, "PDTotalEnergy");
     timer = new Timer();
     previousTime = 0;
 
@@ -114,6 +118,7 @@ public class Robot extends TimedRobot {
     loopTime.append(timer.get() - previousTime);
     previousTime = timer.get();
 
+    PDTotalEnergy.append(m_robotContainer.m_pdp.getTotalEnergy());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
