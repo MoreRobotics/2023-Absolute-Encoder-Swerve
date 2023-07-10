@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.util.datalog.DataLog;
@@ -48,7 +49,7 @@ public class Swerve extends SubsystemBase {
 
     // Logging objects
     private DataLog logger;
-    private DoubleLogEntry robotPose2D;    
+    private DoubleArrayLogEntry robotPose2D;
 
     public Swerve() {
         gyro = new Pigeon2(Constants.Swerve.pigeonID);
@@ -57,7 +58,7 @@ public class Swerve extends SubsystemBase {
 
         logger = DataLogManager.getLog();
         //Log Pose
-        robotPose2D = new DoubleLogEntry(logger, "Swerve/getPose");
+        robotPose2D = new DoubleArrayLogEntry(logger, "Swerve/robotPose2D");
 
         mSwerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.Mod0.constants),
@@ -161,6 +162,14 @@ public class Swerve extends SubsystemBase {
         //System.out.println(getYaw().getDegrees());
         m_field.setRobotPose(swerveOdometry.getPoseMeters());
 
+        Pose2d pose = m_field.getRobotPose();
+        double[] poseArray = {
+            pose.getX(), 
+            pose.getY(), 
+            pose.getRotation().getRadians()
+        };
+        SmartDashboard.putNumberArray("robotPose2D", poseArray);
+
         for(SwerveModule mod : mSwerveMods){
             // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Current Draw", mod.mDriveMotor.getSupplyCurrent());
             // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle Current Draw", mod.mAngleMotor.getSupplyCurrent());
@@ -214,7 +223,15 @@ public class Swerve extends SubsystemBase {
     
     private void logData() {
         for(SwerveModule mod : mSwerveMods) {
-            // mod.logData();
+            mod.logData();
         }
+
+        Pose2d pose = m_field.getRobotPose();
+        double[] poseArray = {
+            pose.getX(), 
+            pose.getY(), 
+            pose.getRotation().getRadians()
+        };
+        robotPose2D.append(poseArray);
     }
 }
