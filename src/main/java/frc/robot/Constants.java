@@ -16,6 +16,10 @@ public final class Constants {
 
     /* WRIST Constants */
     // TODO: Change later when we have actual robot
+
+    public static final double WRIST_SPEED = 400;
+    public static final double WRIST_ACC = 500;
+
     public static final int WRIST_MOTOR_ID = 20;
     public static final int WRIST_ENCODER_ID = 1;
     public static final double WRIST_FORWARD_LIMIT = 40;
@@ -101,6 +105,10 @@ public final class Constants {
     public static final double WRIST_ENCODER_RATIO = 1.4545;
 
     /* Elevator Constants */
+
+    public static final double ELEVATOR_SPEED = 20;
+    public static final double ELEVATOR_ACC = 500;
+
     public static final float FORWARD_ELEVATOR_LIMIT = (float) 28.1;
     public static final float REVERSE_ELEVATOR_LIMIT = (float) 0.5;
     public static final int ELEVATOR_MOTOR_ID = 16;
@@ -170,9 +178,9 @@ public final class Constants {
      public static final double AUTO_ROTATE_DEADBAND = 5.0;
 
      /* slow mode */
-     public static final double SLOW_MODE_PERCENT_TRANSLATION = 0.5;
-     public static final double SLOW_MODE_PERCENT_STRAFE = 0.5;
-     public static final double SLOW_MODE_PERCENT_ROTATION = 0.5;
+     public static final double SLOW_MODE_PERCENT_TRANSLATION = 0.15;
+     public static final double SLOW_MODE_PERCENT_STRAFE = 0.15;
+     public static final double SLOW_MODE_PERCENT_ROTATION = 0.15;
 
      /* auto */
     public static final double AUTO_VEL = 2.0;

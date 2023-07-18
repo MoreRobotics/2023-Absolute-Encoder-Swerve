@@ -438,12 +438,9 @@ public class RobotContainer {
 
 
         driverY.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        driverB.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
+        //driverB.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
 
-        driverStart.onTrue(new InstantCommand(() -> rotationSpeed = 0.5));
-        driverBack.onTrue(new InstantCommand(() -> rotationSpeed = 1.0));
-
-        driverRStick.toggleOnTrue(
+        /*driverRStick.toggleOnTrue(
             new TeleopSwerve(
                 s_Swerve, 
                 () -> -slewRateLimiterY.calculate(driver.getRawAxis(driverLeftY)), 
@@ -456,9 +453,9 @@ public class RobotContainer {
                 true
             ).until(() -> Math.abs(s_Swerve.getYaw().getDegrees() % 360) < Constants.ROTATE_TO_SCORE_TARGET_ANGLE + Constants.AUTO_ROTATE_DEADBAND && 
                 Math.abs(s_Swerve.getYaw().getDegrees() % 360) > Constants.ROTATE_TO_SCORE_TARGET_ANGLE - Constants.AUTO_ROTATE_DEADBAND)
-        );
-
-        driverRB.toggleOnTrue(
+        );*/
+      
+        /*driverRB.toggleOnTrue(
 
             new TeleopSwerve(
                 s_Swerve, 
@@ -472,9 +469,9 @@ public class RobotContainer {
                 true
             ).until(() -> Math.abs(s_Swerve.getYaw().getDegrees() % 360) < Constants.ROTATE_TO_DOUBLE_SUBSTATION_TARGET_ANGLE + Constants.AUTO_ROTATE_DEADBAND && 
                 Math.abs(s_Swerve.getYaw().getDegrees() % 360) > Constants.ROTATE_TO_DOUBLE_SUBSTATION_TARGET_ANGLE - Constants.AUTO_ROTATE_DEADBAND)
-        );
+        );*/
 
-        driverLB.toggleOnTrue(
+        /*driverLB.toggleOnTrue(
 
             new TeleopSwerve(
                 s_Swerve, 
@@ -488,7 +485,7 @@ public class RobotContainer {
                 true
             ).until(() -> Math.abs(s_Swerve.getYaw().getDegrees() % 360) < ((singleSubstationTargetAngle + 180) % 360) + Constants.AUTO_ROTATE_DEADBAND && 
                 Math.abs(s_Swerve.getYaw().getDegrees() % 360) > ((singleSubstationTargetAngle + 180) % 360) - Constants.AUTO_ROTATE_DEADBAND)
-        );
+        );*/
 
 
     }

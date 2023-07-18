@@ -87,7 +87,7 @@ public class Wrist extends SubsystemBase {
  // wristMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.wrist_FORWARD_LIMIT);
 //wristMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.wrist_REVERSE_LIMIT);
   
-    this.controller = new ProfiledPIDController(Constants.WRIST_P, Constants.WRIST_I, Constants.WRIST_D, new Constraints(800, 1000));
+    this.controller = new ProfiledPIDController(Constants.WRIST_P, Constants.WRIST_I, Constants.WRIST_D, new Constraints(Constants.WRIST_SPEED, Constants.WRIST_ACC));
     this.controller.setTolerance(1, 1);
     wristCANEncoder.configFactoryDefault();
     wristCANEncoder.configMagnetOffset(Constants.WRIST_ENCODER_OFFSET);
