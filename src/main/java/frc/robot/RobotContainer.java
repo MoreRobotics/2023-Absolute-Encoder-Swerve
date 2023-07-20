@@ -359,14 +359,8 @@ public class RobotContainer {
                 .andThen(new ConditionalCommand(
                     new YellowLED(leds), 
                     new PurpleLED(leds), 
-                    () -> {
-                        if (RobotMode.mode == ModeOptions.CONE) {
-                            return true;
-                        }
-                        else {
-                            return false;
-                        }
-                }))
+                    () -> RobotMode.mode == ModeOptions.CONE
+                ))
             )
         ).onFalse(new ConditionalCommand(
             new YellowLED(leds), 
@@ -397,14 +391,7 @@ public class RobotContainer {
                 new PurpleLED(leds)
             ),
             
-            () -> {
-                if (RobotMode.mode == ModeOptions.CUBE) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
+            () -> RobotMode.mode == ModeOptions.CUBE
             
             )
         );
