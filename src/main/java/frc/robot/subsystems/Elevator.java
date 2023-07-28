@@ -72,7 +72,7 @@ public class Elevator extends SubsystemBase {
         /*Rate of Speed (Based on 930 Code) */
 
         // double p = SmartDashboard.getNumber("p", 0);
-        this.controller = new ProfiledPIDController(Constants.ELEVATOR_P, Constants.ELEVATOR_I, Constants.ELEVATOR_D, new Constraints(80, 1000));
+        this.controller = new ProfiledPIDController(Constants.ELEVATOR_P, Constants.ELEVATOR_I, Constants.ELEVATOR_D, new Constraints(45, 1000));
         this.controller.setTolerance(100, 100);
         // TODO: Recalculate these constants
         this.ff = new ElevatorFeedforward(0, Constants.ELEVATOR_G, 0.0, 0.0);

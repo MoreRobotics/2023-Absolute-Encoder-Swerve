@@ -405,7 +405,7 @@ public class RobotContainer {
         // operatorStart.onTrue(new GoToDouble(Wrist, elevator));
         
         operatorLeftTrigger.onTrue(new GoToSingle(Wrist, elevator)).onFalse(new GoToStow(Wrist, elevator));
-        operatorRightTrigger.onTrue(new GoToStandingCone(Wrist, elevator, leds));
+        operatorRightTrigger.onTrue(new GoToStandingCone(Wrist, elevator, leds)).onFalse(new GoToStow(Wrist, elevator));
 
         operatorLB.onTrue(new GoToDouble(Wrist, elevator)).onFalse(new GoToStow(Wrist, elevator));
 
