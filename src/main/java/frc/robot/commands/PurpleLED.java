@@ -22,6 +22,7 @@ public class PurpleLED extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+      //120 0 120
       leds.setColor(120,0,120);
       SmartDashboard.putBoolean("isDefault", false);
       SmartDashboard.putBoolean("isPurple", true);

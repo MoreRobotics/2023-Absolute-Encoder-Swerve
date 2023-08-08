@@ -41,7 +41,7 @@ public class ScoreCubePreload extends SequentialCommandGroup {
           RobotMode.ChangeMode(RobotMode.ModeOptions.CUBE),
           new InstantCommand(() -> intake.Stop()),
           new InstantCommand(() -> wrist.SetWristPosition(Constants.WRIST_CUBE_NODE_SAFE)),
-          new GoToHigh(wrist, elevator),
+          new GoToHigh(wrist, elevator).withTimeout(2.0),
           new ReverseIntake(intake).withTimeout(0.5),
           new GoToStow(wrist, elevator)
 

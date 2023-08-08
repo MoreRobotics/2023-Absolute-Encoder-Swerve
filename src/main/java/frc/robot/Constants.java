@@ -30,7 +30,7 @@ public final class Constants {
     public static final double WRIST_CONE_LOW_POSITION = -41.27;
     public static final double WRIST_CONE_MID_POSITION = -82.3;
     public static final double WRIST_CONE_HIGH_POSITION = -30.0;
-    public static final double WRIST_CONE_SINGLE_POSITION = 88.58;
+    public static final double WRIST_CONE_SINGLE_POSITION = 80.0;
     public static final double WRIST_CONE_DOUBLE_POSITION = -44.41;
     public static final double WRIST_CONE_STANDING_POSITION = -55.0;
     public static final double WRIST_CONE_SAFE_POSITION = 115;
@@ -40,7 +40,7 @@ public final class Constants {
     public static final double WRIST_CUBE_LOW_POSITION = -41.27;
     public static final double WRIST_CUBE_MID_POSITION = -51.7;
     public static final double WRIST_CUBE_HIGH_POSITION = -20.7;
-    public static final double WRIST_CUBE_SINGLE_POSITION = 88.58;
+    public static final double WRIST_CUBE_SINGLE_POSITION = 80.0;
     public static final double WRIST_CUBE_DOUBLE_POSITION = WRIST_CONE_DOUBLE_POSITION;
     public static final double WRIST_CUBE_SAFE_POSITION = 115;
     public static final double WRIST_CUBE_HYBRID_POSITION = 58.58;
@@ -121,7 +121,7 @@ public final class Constants {
     public static final double ELEVATOR_CONE_SAFE_LEVEL = 10.0;
     public static final double ELEVATOR_CONE_STOW_LEVEL = REVERSE_ELEVATOR_LIMIT;
     public static final double ELEVATOR_CONE_SINGLE_POSITION = 0;
-    public static final double ELEVATOR_CONE_DOUBLE_POSITION = 24.25;
+    public static final double ELEVATOR_CONE_DOUBLE_POSITION = 23.75;
     public static final double ELEVATOR_CONE_STANDING_POSITION = 7.25;
 
     public static final double ELEVATOR_CUBE_HIGH_LEVEL = 23.1;
@@ -148,9 +148,9 @@ public final class Constants {
     public static final int OPERATOR_PORT = 1;
 
     // auto balancing constants
-    public static final double AUTO_BALANCE_P = -0.03;
+    public static final double AUTO_BALANCE_P = 0.03;
     public static final double AUTO_BALANCE_I = 0.00;
-    public static final double AUTO_BALANCE_D = -0.01;
+    public static final double AUTO_BALANCE_D = 0.01;
     public static final double RED_BALANCE_LEVEL = 0;
     public static final double BLUE_BALANCE_LEVEL = 0;
     public static final double BALANCE_LEVEL_DEADZONE = 5.0;
@@ -262,7 +262,7 @@ public final class Constants {
             public static final int driveMotorID = 0;
             public static final int angleMotorID = 1;
             public static final int encoderID = 0;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(20.55); //189.22,20.30
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(20.35); //189.22,20.30, 20.55
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID, angleOffset);
         }
@@ -272,7 +272,7 @@ public final class Constants {
             public static final int driveMotorID = 2;
             public static final int angleMotorID = 3;
             public static final int encoderID = 1;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(274.412); //89.22,265
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(274.412); //89.22,265, 274.412
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID, angleOffset);
         }
@@ -282,7 +282,7 @@ public final class Constants {
             public static final int driveMotorID = 4;
             public static final int angleMotorID = 5;
             public static final int encoderID = 2;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(201.62); //18.80,192.48
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(201.62); //18.80,192.48, 201.62
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID, angleOffset);
         }
@@ -292,7 +292,7 @@ public final class Constants {
             public static final int driveMotorID = 6;
             public static final int angleMotorID = 7;
             public static final int encoderID = 3;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(141.92); //307.00,315.08
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(141.92); //307.00,315.08, 141.92
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID, angleOffset);
         }

@@ -24,6 +24,7 @@ public class IdleLEDS extends CommandBase {
     public void initialize() {
 
       // Set leds to light blue
+      //50 50 255
       leds.setColor(50,50,255);
       SmartDashboard.putBoolean("isDefault", true);
       SmartDashboard.putBoolean("isPurple", false);
