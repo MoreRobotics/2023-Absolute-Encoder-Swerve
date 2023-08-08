@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Diagnostics;
 import frc.robot.RobotMode;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
@@ -48,6 +49,10 @@ public class Intake extends SubsystemBase {
     public Intake() {
 
       motor = new CANSparkMax(Constants.INTAKE_MOTOR_1_ID, MotorType.kBrushless);
+
+      // register motor with diagnostics
+      Diagnostics.getInstance().register(motor, "Intake Motor");
+
       motor.setIdleMode(IdleMode.kBrake);
       motor.enableSoftLimit(SoftLimitDirection.kForward, false);
       motor.enableSoftLimit(SoftLimitDirection.kReverse, false);

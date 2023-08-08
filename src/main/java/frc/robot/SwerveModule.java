@@ -61,6 +61,10 @@ public class SwerveModule {
         mDriveMotor = new TalonFX(moduleConstants.driveMotorID);
         configDriveMotor();
 
+        // register the motors with the diagnostics
+        Diagnostics.getInstance().register(mAngleMotor, "Swerve Module " + moduleNumber + " Angle Motor");
+        Diagnostics.getInstance().register(mDriveMotor, "Swerve Module " + moduleNumber + " Drive Motor");
+
         lastAngle = getState().angle;
 
         // logger = DataLogManager.getLog();

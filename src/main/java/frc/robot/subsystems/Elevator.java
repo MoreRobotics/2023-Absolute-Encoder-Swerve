@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Diagnostics;
 import frc.robot.RobotMode;
 import frc.robot.RobotMode.ModeOptions;
 import frc.robot.RobotMode.StateOptions;
@@ -58,6 +59,10 @@ public class Elevator extends SubsystemBase {
 
     public Elevator() {
         elevatorMotor = new CANSparkMax(Constants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
+
+        // register the motor with the diagnostics
+        Diagnostics.getInstance().register(elevatorMotor, "Elevator Motor");
+
         //TODO: Set Current Limiters
         elevatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
         elevatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
