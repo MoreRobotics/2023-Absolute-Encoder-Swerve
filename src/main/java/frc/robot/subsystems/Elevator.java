@@ -30,7 +30,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Diagnostics;
+import frc.robot.diagnostics.Diagnostics;
 import frc.robot.RobotMode;
 import frc.robot.RobotMode.ModeOptions;
 import frc.robot.RobotMode.StateOptions;

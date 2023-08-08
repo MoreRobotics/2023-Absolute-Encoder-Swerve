@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.diagnostics;
 
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;

@@ -12,6 +12,7 @@ import frc.lib.math.Conversions;
 import frc.lib.util.AbsoluteEncoder;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
+import frc.robot.diagnostics.Diagnostics;
 
 import javax.sound.sampled.Port;
 

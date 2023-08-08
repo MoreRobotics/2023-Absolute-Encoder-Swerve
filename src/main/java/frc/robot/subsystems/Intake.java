@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Diagnostics;
+import frc.robot.diagnostics.Diagnostics;
 import frc.robot.RobotMode;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
