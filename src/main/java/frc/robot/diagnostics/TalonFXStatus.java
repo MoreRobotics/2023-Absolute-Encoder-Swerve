@@ -1,5 +1,6 @@
 package frc.robot.diagnostics;
 
+import java.util.ArrayList;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.StickyFaults;
@@ -32,7 +33,7 @@ public class TalonFXStatus extends DeviceStatus {
         if (faults.hasAnyFault()) {
             deviceStatus = DeviceStatusEnum.ERROR;
         }
-        SmartDashboard.putString("TalonFXs/" + deviceName + "/Faults", faults.toString());
+        SmartDashboard.putString("TalonFXs/" + deviceName + "/Faults", parseFaultString(faults));
     }
 
     private void checkStickyFaults() {
@@ -41,7 +42,7 @@ public class TalonFXStatus extends DeviceStatus {
         if (stickyFaults.hasAnyFault()) {
             deviceStatus = DeviceStatusEnum.ERROR;
         }
-        SmartDashboard.putString("TalonFXs/" + deviceName + "/Sticky Faults", stickyFaults.toString());
+        SmartDashboard.putString("TalonFXs/" + deviceName + "/Sticky Faults", parseStickyFaultString(stickyFaults));
     }
 
     private void checkLastError() {
@@ -57,5 +58,56 @@ public class TalonFXStatus extends DeviceStatus {
             deviceStatus = DeviceStatusEnum.ERROR;
         }
         SmartDashboard.putString("TalonFXs/" + deviceName + "/Current Error", errorCode.toString());
+    }
+
+    private String parseFaultString(Faults faults) {
+        String[] faultString = faults.toString().split(" ");
+        ArrayList<Integer> faultBitfield = intToBinaryList(faults.toBitfield());
+
+        ArrayList<String> faultsArray = new ArrayList<>();
+        for (int i=0; i < faultBitfield.size(); i++) {
+            try {
+                if (faultBitfield.get(i) == 1) {
+                    faultsArray.add(faultString[i + 1]);
+                }
+            } catch (Exception e) {
+                System.out.println("Probably overran the faultString array in parseFaultString()");
+            }
+        }
+
+        return faultsArray.toString();
+    }
+
+    private String parseStickyFaultString(StickyFaults faults) {
+        String[] faultString = faults.toString().split(" ");
+        ArrayList<Integer> faultBitfield = intToBinaryList(faults.toBitfield());
+
+        ArrayList<String> faultsArray = new ArrayList<>();
+        for (int i=0; i < faultBitfield.size(); i++) {
+            try {
+                if (faultBitfield.get(i) == 1) {
+                    faultsArray.add(faultString[i + 1]);
+                }
+            } catch (Exception e) {
+                System.out.println("Probably overran the faultString array in parseStickyFaultString()");
+            }
+        }
+
+        return faultsArray.toString();
+    }
+
+    private ArrayList<Integer> intToBinaryList(int number) {
+        ArrayList<Integer> binaryList = new ArrayList<>();
+
+        while (number > 0) {
+            binaryList.add(number % 2);
+            number /= 2;
+        }
+
+        if (binaryList.isEmpty()) {
+            binaryList.add(0);
+        }
+
+        return binaryList;
     }
 }
