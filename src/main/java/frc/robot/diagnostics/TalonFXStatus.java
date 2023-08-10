@@ -22,13 +22,14 @@ public class TalonFXStatus extends DeviceStatus {
 
     @Override
     public void checkStatus() {
-        SmartDashboard.putNumber("TalonFXs/" + deviceName + "/Bus Voltage", talonFX.getBusVoltage());
-        SmartDashboard.putNumber("TalonFXs/" + deviceName + "/Supply Current", talonFX.getSupplyCurrent());
-
         checkFaults();
         checkStickyFaults();
         checkLastError();
         clearStickyFaults();
+        checkBusVoltage();
+
+        // Don't need to check the supply current for anything, just helpful to see.
+        SmartDashboard.putNumber("TalonFXs/" + deviceName + "/Supply Current", talonFX.getSupplyCurrent());
     }
 
     @Override
@@ -51,6 +52,11 @@ public class TalonFXStatus extends DeviceStatus {
     private void checkLastError() {
         ErrorCode errorCode = talonFX.getLastError();
         updateStatus(errorCode.toString(), errorCode != ErrorCode.OK, "/Last Error");
+    }
+
+    private void checkBusVoltage() {
+        double busVoltage = talonFX.getBusVoltage();
+        updateStatus(busVoltage, busVoltage < 9.0, "/Bus Voltage");
     }
 
     /* Helper Methods */
