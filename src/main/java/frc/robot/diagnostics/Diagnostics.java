@@ -2,6 +2,7 @@ package frc.robot.diagnostics;
 
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -10,14 +11,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** Add your docs here. */
 public class Diagnostics {
-    private ConcurrentHashMap<String, TalonFX> talonFXs; 
-    private ConcurrentHashMap<String, CANSparkMax> sparkMAXs;
+    private ConcurrentLinkedQueue<DeviceStatus> devices;
     private static Diagnostics instance;
     private boolean shouldRun = true;
 
     private Diagnostics() {
-        talonFXs = new ConcurrentHashMap<String, TalonFX>();
-        sparkMAXs = new ConcurrentHashMap<String, CANSparkMax>();
+        devices = new ConcurrentLinkedQueue<DeviceStatus>();
         start();
     }
 
@@ -29,22 +28,20 @@ public class Diagnostics {
     }
 
     public void register(TalonFX talonFX, String name) {
-        talonFXs.put(name, talonFX);
+        devices.add(new TalonFXStatus(talonFX, name));
     }
 
     public void register(CANSparkMax sparkMAX, String name) {
-        sparkMAXs.put(name, sparkMAX);
+        devices.add(new SparkMaxStatus(sparkMAX, name));
     }
 
     public void start() {
         if (shouldRun) {
             new Thread(() -> {
                 while (shouldRun) {
-                    for (Entry<String, TalonFX> entry : talonFXs.entrySet()) {
-                        runTalonFXDiagnostics(entry.getValue(), entry.getKey());
-                    }
-                    for (Entry<String, CANSparkMax> entry : sparkMAXs.entrySet()) {
-                        runSparkMAXDiagnostics(entry.getValue(), entry.getKey());
+                    // could use a ScheduledExecutorService if we do not want to check the status constantly 
+                    for (DeviceStatus device : devices) {
+                        device.checkStatus();
                     }
                 }
             }).start();
@@ -53,16 +50,5 @@ public class Diagnostics {
 
     public void stopDiagnostics() {
         shouldRun = false;
-    }
-
-    private void runTalonFXDiagnostics(TalonFX talonFX, String name) {
-        SmartDashboard.putNumber("TalonFXs/" + name + "/Bus Voltage", talonFX.getBusVoltage());
-        SmartDashboard.putNumber("TalonFXs/" + name + "/Supply Current", talonFX.getSupplyCurrent());
-    }
-
-    private void runSparkMAXDiagnostics(CANSparkMax sparkMAX, String name) {
-        SmartDashboard.putNumber("SparkMAXs/" + name + "/Bus Voltage", sparkMAX.getBusVoltage());
-        SmartDashboard.putNumber("SparkMAXs/" + name + "/Applied Output", sparkMAX.getAppliedOutput());
-        SmartDashboard.putNumber("SparkMAXs/" + name + "/Output Current", sparkMAX.getOutputCurrent());
     }
 }

@@ -20,6 +20,9 @@
         "open": true
       },
       "SmartDashboard": {
+        "Diagnostics": {
+          "open": true
+        },
         "open": true
       }
     }
