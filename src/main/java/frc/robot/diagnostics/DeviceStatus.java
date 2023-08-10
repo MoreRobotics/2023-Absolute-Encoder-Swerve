@@ -8,7 +8,7 @@ public abstract class DeviceStatus {
 
     public DeviceStatus(String deviceName) {
         this.deviceName = deviceName;
-        this.deviceStatus = DeviceStatusEnum.ERROR; // Default status is error because we don't know if the device is working or not until we check
+        this.deviceStatus = DeviceStatusEnum.WORKING; // Default status is working because we assume it is fine until we find somethign wrong
     }
 
     // Enum to represent device status
