@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SparkMaxStatus extends DeviceStatus {
     private CANSparkMax sparkMax;
 
-    public SparkMaxStatus(CANSparkMax sparkMax, String deviceName) {
-        super(deviceName);
+    public SparkMaxStatus(CANSparkMax sparkMax, String deviceName, String deviceType) {
+        super(deviceName, deviceType);
         this.sparkMax = sparkMax;
     }
 
@@ -19,8 +19,9 @@ public class SparkMaxStatus extends DeviceStatus {
         SmartDashboard.putNumber("SparkMAXs/" + deviceName + "/Output Current", sparkMax.getOutputCurrent());
     }
 
-    private void checkFaults() {
-        
+    @Override
+    protected void clearStickyFaults() {
+        sparkMax.clearFaults();
     }
     
 }

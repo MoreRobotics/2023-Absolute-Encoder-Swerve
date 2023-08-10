@@ -1,31 +1,29 @@
 package frc.robot.diagnostics;
 
 import java.util.ArrayList;
+import java.util.function.BooleanSupplier;
+import java.util.function.Function;
+
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TalonFXStatus extends DeviceStatus {
     private TalonFX talonFX;
 
-    public TalonFXStatus(TalonFX talonFX, String deviceName) {
-        super(deviceName);
+    public TalonFXStatus(TalonFX talonFX, String deviceName, String deviceType) {
+        super(deviceName, deviceType);
         this.talonFX = talonFX;
-        shouldClearStickyFaults = false; // For now this does nothing as I can't figure out how to activate this from Shuffleboard
     }
 
     @Override
     public void checkStatus() {
-        SmartDashboard.putBoolean("Diagnostics/" + deviceName, deviceStatus == DeviceStatusEnum.WORKING);
         SmartDashboard.putNumber("TalonFXs/" + deviceName + "/Bus Voltage", talonFX.getBusVoltage());
         SmartDashboard.putNumber("TalonFXs/" + deviceName + "/Supply Current", talonFX.getSupplyCurrent());
-        SmartDashboard.putBoolean("TalonFXs/" + deviceName + "/Clear Sticky Faults", shouldClearStickyFaults);
 
         checkFaults();
         checkStickyFaults();
@@ -33,45 +31,32 @@ public class TalonFXStatus extends DeviceStatus {
         clearStickyFaults();
     }
 
+    @Override
+    protected void clearStickyFaults() {
+        handleErrorCode(talonFX.clearStickyFaults());
+    }
+
     private void checkFaults() {
         Faults faults = new Faults();
         handleErrorCode(talonFX.getFaults(faults));
-        if (faults.hasAnyFault()) {
-            deviceStatus = DeviceStatusEnum.ERROR;
-        }
-        SmartDashboard.putString("TalonFXs/" + deviceName + "/Faults", parseFaultString(faults));
+        updateStatus(parseFaultString(faults), faults.hasAnyFault(), "/Faults");
     }
 
     private void checkStickyFaults() {
         StickyFaults stickyFaults = new StickyFaults();
         handleErrorCode(talonFX.getStickyFaults(stickyFaults));
-        if (stickyFaults.hasAnyFault()) {
-            deviceStatus = DeviceStatusEnum.ERROR;
-        }
-        SmartDashboard.putString("TalonFXs/" + deviceName + "/Sticky Faults", parseStickyFaultString(stickyFaults));
+        updateStatus(parseStickyFaultString(stickyFaults), stickyFaults.hasAnyFault(), "/Sticky Faults");
     }
 
     private void checkLastError() {
         ErrorCode errorCode = talonFX.getLastError();
-        if (errorCode != ErrorCode.OK) {
-            deviceStatus = DeviceStatusEnum.ERROR;
-        }
-        SmartDashboard.putString("TalonFXs/" + deviceName + "/Last Error", errorCode.toString());
-    }
-
-    private void clearStickyFaults() {
-        if (shouldClearStickyFaults) {
-            handleErrorCode(talonFX.clearStickyFaults());
-        }
+        updateStatus(errorCode.toString(), errorCode != ErrorCode.OK, "/Last Error");
     }
 
     /* Helper Methods */
 
     private void handleErrorCode(ErrorCode errorCode) {
-        if (errorCode != ErrorCode.OK) {
-            deviceStatus = DeviceStatusEnum.ERROR;
-        }
-        SmartDashboard.putString("TalonFXs/" + deviceName + "/Current Error", errorCode.toString());
+        updateStatus(errorCode.toString(), errorCode != ErrorCode.OK, "/Current Error");
     }
 
     private String parseFaultString(Faults faults) {
@@ -110,6 +95,7 @@ public class TalonFXStatus extends DeviceStatus {
         return faultsArray.toString();
     }
 
+    // TODO: Move to general util location
     private ArrayList<Integer> intToBinaryList(int number) {
         ArrayList<Integer> binaryList = new ArrayList<>();
 

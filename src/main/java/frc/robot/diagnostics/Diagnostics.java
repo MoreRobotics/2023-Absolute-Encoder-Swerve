@@ -28,11 +28,11 @@ public class Diagnostics {
     }
 
     public void register(TalonFX talonFX, String name) {
-        devices.add(new TalonFXStatus(talonFX, name));
+        devices.add(new TalonFXStatus(talonFX, name, "TalonFXs"));
     }
 
     public void register(CANSparkMax sparkMAX, String name) {
-        devices.add(new SparkMaxStatus(sparkMAX, name));
+        devices.add(new SparkMaxStatus(sparkMAX, name, "SparkMAXs"));
     }
 
     public void start() {
@@ -41,7 +41,7 @@ public class Diagnostics {
                 while (shouldRun) {
                     // could use a ScheduledExecutorService if we do not want to check the status constantly 
                     for (DeviceStatus device : devices) {
-                        device.checkStatus();
+                        device.periodic();
                     }
                 }
             }).start();
