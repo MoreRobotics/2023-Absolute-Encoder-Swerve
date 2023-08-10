@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public abstract class DeviceStatus {
     protected String deviceName;
     protected DeviceStatusEnum deviceStatus;
+    protected boolean shouldClearStickyFaults;
 
     public DeviceStatus(String deviceName) {
         this.deviceName = deviceName;

@@ -6,6 +6,9 @@ import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TalonFXStatus extends DeviceStatus {
@@ -14,6 +17,7 @@ public class TalonFXStatus extends DeviceStatus {
     public TalonFXStatus(TalonFX talonFX, String deviceName) {
         super(deviceName);
         this.talonFX = talonFX;
+        shouldClearStickyFaults = false; // For now this does nothing as I can't figure out how to activate this from Shuffleboard
     }
 
     @Override
@@ -21,10 +25,12 @@ public class TalonFXStatus extends DeviceStatus {
         SmartDashboard.putBoolean("Diagnostics/" + deviceName, deviceStatus == DeviceStatusEnum.WORKING);
         SmartDashboard.putNumber("TalonFXs/" + deviceName + "/Bus Voltage", talonFX.getBusVoltage());
         SmartDashboard.putNumber("TalonFXs/" + deviceName + "/Supply Current", talonFX.getSupplyCurrent());
+        SmartDashboard.putBoolean("TalonFXs/" + deviceName + "/Clear Sticky Faults", shouldClearStickyFaults);
 
         checkFaults();
         checkStickyFaults();
         checkLastError();
+        clearStickyFaults();
     }
 
     private void checkFaults() {
@@ -52,6 +58,14 @@ public class TalonFXStatus extends DeviceStatus {
         }
         SmartDashboard.putString("TalonFXs/" + deviceName + "/Last Error", errorCode.toString());
     }
+
+    private void clearStickyFaults() {
+        if (shouldClearStickyFaults) {
+            handleErrorCode(talonFX.clearStickyFaults());
+        }
+    }
+
+    /* Helper Methods */
 
     private void handleErrorCode(ErrorCode errorCode) {
         if (errorCode != ErrorCode.OK) {
