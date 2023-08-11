@@ -28,7 +28,7 @@ public class TalonFXStatus extends DeviceStatus {
         clearStickyFaults();
         checkBusVoltage();
 
-        // Don't need to check the supply current for anything, just helpful to see.
+        // Don't need to the below values for anything, just helpful to see.
         SmartDashboard.putNumber("TalonFXs/" + deviceName + "/Supply Current", talonFX.getSupplyCurrent());
     }
 

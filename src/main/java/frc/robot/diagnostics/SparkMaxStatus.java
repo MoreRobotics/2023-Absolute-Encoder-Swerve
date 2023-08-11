@@ -14,7 +14,9 @@ public class SparkMaxStatus extends DeviceStatus {
 
     @Override
     public void checkStatus() {
-        SmartDashboard.putNumber("SparkMAXs/" + deviceName + "/Bus Voltage", sparkMax.getBusVoltage());
+        checkBusVoltage();
+
+        // Don't need to the below values for anything, just helpful to see.
         SmartDashboard.putNumber("SparkMAXs/" + deviceName + "/Applied Output", sparkMax.getAppliedOutput());
         SmartDashboard.putNumber("SparkMAXs/" + deviceName + "/Output Current", sparkMax.getOutputCurrent());
     }
@@ -22,6 +24,11 @@ public class SparkMaxStatus extends DeviceStatus {
     @Override
     protected void clearStickyFaults() {
         sparkMax.clearFaults();
+    }
+
+    private void checkBusVoltage() {
+        double busVoltage = sparkMax.getBusVoltage();
+        updateStatus(busVoltage, busVoltage < 9.0, "/Bus Voltage");
     }
     
 }
