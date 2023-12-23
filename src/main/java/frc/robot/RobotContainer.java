@@ -4,12 +4,8 @@ import java.util.function.DoubleSupplier;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Compressor;
@@ -36,17 +32,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
-
 import frc.robot.RobotMode.ModeOptions;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
-import frc.robot.commands.AutoCommands.AutoCommand;
-import frc.robot.commands.AutoCommands.AutoParts.AutoBalance;
-import frc.robot.commands.AutoCommands.AutoParts.ScoreConePreload;
-import frc.robot.commands.AutoCommands.AutoParts.ScoreCube;
-import frc.robot.commands.AutoCommands.AutoParts.ScoreCubePreload;
-import frc.robot.commands.AutoCommands.GameAutos.*;
 import frc.robot.commands.MovementCommands.GoToDouble;
 import frc.robot.commands.MovementCommands.GoToHigh;
 import frc.robot.commands.MovementCommands.GoToHybrid;
@@ -180,68 +168,6 @@ public class RobotContainer {
 
         eventMap = new HashMap<>();
 
-
-
-        eventMap.put("Score Cone Preload", new ScoreConePreload(elevator, Wrist, intake));
-        eventMap.put("Score Cube Preload", new ScoreCubePreload(elevator, Wrist, intake));
-        eventMap.put("Score Cube", new ScoreCube(elevator, Wrist, intake));
-        eventMap.put("Auto Balance", new AutoBalance(s_Swerve));
-        eventMap.put("Go To Ground", new GoToLow(Wrist, elevator));
-        eventMap.put("Run Intake", new RunIntake(intake));
-        eventMap.put("Reverse Intake", new ReverseIntake(intake));
-        eventMap.put("Go To Stow", new GoToStow(Wrist, elevator));
-
-
-
-
-        //autoChooser.addOption("Mid Auto Timed", new AutoCommand(DuluthAuto2()));
-        //autoChooser.addOption("Score Preload Timed", new AutoCommand(new ScoreCubePreload(elevator, Wrist, intake))); 
-
-        //autoChooser.addOption("Score Cone Preload",new AutoCommand(s_Swerve, "Score Cone Preload", eventMap));
-
-        //autoChooser.addOption("Inside Auto Cone",new AutoCommand(s_Swerve, "Inside Auto Cone", eventMap));
-        autoChooser.addOption("Inside Auto Cube",new AutoCommand(s_Swerve, "Inside Auto Cube", eventMap));
-
-        //autoChooser.addOption("Mid Auto Cone",new AutoCommand(s_Swerve, "Mid Auto Cone", eventMap));
-        //autoChooser.addOption("Mid Auto Cube",new AutoCommand(s_Swerve, "Mid Auto Cube", eventMap));
-        autoChooser.setDefaultOption("Mid Auto Cube",new AutoCommand(s_Swerve, "Mid Auto Cube 2", eventMap)); //NOTE: mid auto 2
-
-        //autoChooser.addOption("Outside Auto Cone",new AutoCommand(s_Swerve, "Outside Auto Cone", eventMap));
-        autoChooser.addOption("Outside Auto Cube",new AutoCommand(s_Swerve, "Outside Auto Cube", eventMap));
-
-        //autoChooser.addOption("Inside Auto Balance Cone",new AutoCommand(s_Swerve, "Inside Auto Balance Cone", eventMap));
-        //autoChooser.addOption("Inside Auto Balance Cube",new AutoCommand(s_Swerve, "Inside Auto Balance Cube", eventMap));
-
-        //autoChooser.addOption("Outside Auto Balance Cone",new AutoCommand(s_Swerve, "Outside Auto Balance Cone", eventMap));
-        //autoChooser.addOption("Outside Auto Balance Cube",new AutoCommand(s_Swerve, "Outside Auto Balance Cube", eventMap));
-
-        //autoChooser.addOption("Duluth Auto Cone",new AutoCommand(s_Swerve, "Duluth Auto Cone", eventMap));
-        autoChooser.addOption("Score Cube Preload",new AutoCommand(s_Swerve, "Score Cube Preload", eventMap));
-        autoChooser.addOption("Duluth Auto Path",new AutoCommand(s_Swerve, "Duluth Auto Cube", eventMap));
-        autoChooser.addOption("Duluth Auto Timed", new AutoCommand(DuluthAuto()));
-        autoChooser.addOption("Leave Community Auto Timed", new AutoCommand(LeaveCommunityAuto()));
-
-
-        // autoChooser.addOption("Score Cube Preload", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Score Cube Preload", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-        
-        // autoChooser.addOption("Inside Auto Cone", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Inside Auto Cone", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-        // autoChooser.addOption("Inside Auto Cube", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Inside Auto Cube", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-        
-        // autoChooser.addOption("Mid Auto Balance Cone", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Mid Auto Cone", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-        // autoChooser.addOption("Mid Auto Balance Cube", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Mid Auto Cube", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-        
-        // autoChooser.addOption("Outside Auto Cone", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Outside Auto Cone", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-        // autoChooser.addOption("Outside Auto Cube", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Outside Auto Cube", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-        
-        // autoChooser.addOption("Inside Auto Balance Cone", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Inside Auto Balance Cone", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-        // autoChooser.addOption("Inside Auto Balance Cube", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Inside Auto Balance Cube", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-        
-        // autoChooser.addOption("Duluth Auto Cone", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Duluth Auto Cone", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-        // autoChooser.addOption("Duluth Auto Cube", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Duluth Auto Cube", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-
-        // autoChooser.addOption("Test Auto", autoBuilder.fullAuto(new ArrayList<PathPlannerTrajectory>(PathPlanner.loadPathGroup("Test Auto", new PathConstraints(Constants.AUTO_VEL, Constants.AUTO_ACC)))));
-
-
         SmartDashboard.putData("driver/auto", autoChooser);
 
         // Configure the button bindings
@@ -284,55 +210,8 @@ public class RobotContainer {
         return new exampleAuto(s_Swerve);
     }
 
-    public CommandBase DuluthAuto() {
 
-        return new SequentialCommandGroup(
-
-        // score preload
-        new ScoreCubePreload(elevator, Wrist, intake),
-
-        // drive backwards
-        new DriveCommand(s_Swerve, -1.0,  0.0, 0.0).withTimeout(1.25),
-        //stop
-        new DriveCommand(s_Swerve, 0.0,0.0,0.0).withTimeout(0.1),
-
-        // auto-balance
-        new AutoBalance(s_Swerve)
-
-    );
-    }
-
-    public CommandBase LeaveCommunityAuto() {
-
-        return new SequentialCommandGroup(
-
-        // score preload
-        new ScoreCubePreload(elevator, Wrist, intake),
-
-        // drive backwards
-        new DriveCommand(s_Swerve, -1.0,  0.0, 0.0).withTimeout(4)
-
-    );
-    }
-
-    public CommandBase DuluthAuto2() {
-
-        return new SequentialCommandGroup(
-
-        // score preload
-        new ScoreCubePreload(elevator, Wrist, intake),
-
-        // drive backwards
-        new DriveCommand(s_Swerve, -1.0,  0.0, 0.0).withTimeout(4),
-        //stop
-        new DriveCommand(s_Swerve, 0.0,0.0,0.0).withTimeout(0.1),
-        //drive forwards
-        new DriveCommand(s_Swerve, 1.0,0.0,0.0).withTimeout(2),
-        // auto-balance
-        new AutoBalance(s_Swerve)
-
-    );
-    }
+    
 
     public void setSingleSubstationTargetAngle() {
         if (DriverStation.getAlliance() == Alliance.Red) {
@@ -342,7 +221,7 @@ public class RobotContainer {
         }
     }
 
-    public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+    public Command followTrajectoryCommand(PathPlannerPath traj, boolean isFirstPath) {
         return s_Swerve.followTrajectoryCommand(traj, isFirstPath);
     }
 

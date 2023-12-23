@@ -2,11 +2,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.sensors.Pigeon2;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import frc.robot.SwerveModule;
-import frc.robot.commands.AutoCommands.AutoParts.AutoBalance;
 import frc.robot.Constants;
 import frc.robot.FieldCentricOffset;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -14,8 +13,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-
-import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -25,14 +22,12 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
@@ -179,15 +174,15 @@ public class Swerve extends SubsystemBase {
 
 
     // Assuming this method is part of a drivetrain subsystem that provides the necessary methods
-    public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
-
+    public Command followTrajectoryCommand(PathPlannerPath traj, boolean isFirstPath) {
+        /*
         return new SequentialCommandGroup(
             new InstantCommand(() -> {
             // Reset odometry for the first path you run during auto
             if(isFirstPath){
-                this.resetOdometry(traj.getInitialHolonomicPose());
-                SmartDashboard.putNumber ("InitialXPos", traj.getInitialHolonomicPose().getX());
-                SmartDashboard.putNumber ("InitialYPos", traj.getInitialHolonomicPose().getY());
+                this.resetOdometry(traj.getPreviewStartingHolonomicPose());
+                SmartDashboard.putNumber ("InitialXPos", traj.getPreviewStartingHolonomicPose().getX());
+                SmartDashboard.putNumber ("InitialYPos", traj.getPreviewStartingHolonomicPose().getY());
             }
             }),
             new PPSwerveControllerCommand(
@@ -201,6 +196,9 @@ public class Swerve extends SubsystemBase {
                 this // Requires this drive subsystem
             )
         );
+        */
+        return null;
+    
     }
 
     public Command LockWheels() {
